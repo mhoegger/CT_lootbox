@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-   
+
   </div>
 </template>
 
@@ -8,14 +8,14 @@
 
 export default {
   name: "Inventory",
-  data: function() {
+  data () {
     return {
-    
+
     };
   },
   props: {},
   components: {
-    },
+  },
   methods: {}
 };
 </script>

@@ -19,7 +19,7 @@ import Pack from "./Pack.vue";
 
 export default {
   name: "Buy",
-  data: function() {
+  data () {
     return {
       packs: [
         {
@@ -41,11 +41,27 @@ export default {
   components: {
     Pack
   },
+  mounted () {
+    console.log("dispatching getContractInstance");
+    this.$store.dispatch("getContractInstance");
+  },
   methods: {
-      buyPack: function() {
-          console.log('TODO: buy')
-          return true;
-      },
+    buyPack () {
+      console.log("cont",this.$store.state.contractInstance());
+      this.$store.state.contractInstance().buyBox({
+        gas: 300000,
+        // value: this.$store.state.web3.web3Instance().toWei("0.1", "ether"),
+        from: this.$store.state.web3.coinbase
+      },(err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
+      });
+      console.log("TODO: buy");
+      return true;
+    }
   }
 };
 </script>

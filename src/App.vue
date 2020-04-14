@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header v-show="notHome"></Header>
+    <Header v-if="notHome && Web3Ready"></Header>
     <router-view />
     <!-- <Footer/> -->
   </div>
@@ -19,14 +19,19 @@ export default {
     Footer
   },
   computed: {
-    notHome() {
-      if (this.$route.path == "/" || this.$route.path == "/home") {
-        return false;
-      } else {
-        return true;
-
-      }
+    notHome () {
+      return !(this.$route.path === "/" || this.$route.path === "/home");
+    },
+    Web3Ready () {
+      console.log("this.$store.state.is_connected", this.$store.state)
+      console.log("this.$store.state.is_connected", this.$store.state.web3)
+      console.log("this.$store.state.is_connected", this.$store.state.web3.is_connected)
+      return this.$store.state.web3.is_connected;
     }
+  },
+  beforeCreate () {
+    console.log("registerWeb3 Action dispatched from casino-dapp.vue");
+    this.$store.dispatch("registerWeb3");
   }
 };
 </script>
@@ -53,7 +58,6 @@ body {
 }
 
 .page-wrapper {
-
 
 }
 .container {

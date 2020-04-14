@@ -10,20 +10,20 @@
 
 export default {
   name: "Pack",
-  data: function() {
+  data () {
     return {
     };
   },
   props: {
-      name: String,
-      price: Number,
+    name: String,
+    price: Number
   },
   components: {
   },
   methods: {
-      buy: function() {
-          this.$emit('bought')
-      },
+    buy () {
+      this.$emit("bought");
+    }
   }
 };
 </script>

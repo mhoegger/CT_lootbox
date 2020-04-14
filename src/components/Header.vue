@@ -7,8 +7,9 @@
           <div id="eth-account">
             <img class="img-fluid" src="./../assets/ethereum-1.svg" alt />
             <div id="eth-balance">
-              <p>0</p>
+              <p>{{balance}}</p>
             </div>
+            <img class="avatar" :src="`https://robohash.org/${{address}}`" alt="Avatar">
           </div>
         </div>
       </div>
@@ -17,10 +18,26 @@
 </template>
 
 <script>
+
+import ether from "@/mixin/ether.js";
+
 export default {
   name: "Header",
   props: {
     msg: String
+  },
+  computed: {
+    balance () {
+      console.log(this.toEther(this.$store.state.web3.balance));
+      return this.toEther(this.$store.state.web3.balance);
+    },
+    address () {
+      return this.$store.state.web3.coinbase;
+    }
+  },
+  mixins: [ether],
+  created () {
+    console.log("....");
   }
 };
 </script>
@@ -59,5 +76,10 @@ h3 {
 .header-right img {
   max-height: 50px;
   width: auto;
+}
+
+img.avatar {
+  border-radius: 50%;
+  background-color: #5E5E5E;
 }
 </style>

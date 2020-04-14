@@ -14,13 +14,13 @@ export default new Router({
       component: Home
     },
     {
-      path: '/buy',
-      name: 'Buy',
+      path: "/buy",
+      name: "Buy",
       component: Buy
     },
     {
-      path: '/inventory',
-      name: 'Inventory',
+      path: "/inventory",
+      name: "Inventory",
       component: Inventory
     }
   ]
