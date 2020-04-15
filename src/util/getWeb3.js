@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import Vue from "vue";
 
 function checkMetamask () {
   // Check for injected web3 (mist/metamask)

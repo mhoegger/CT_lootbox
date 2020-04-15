@@ -2,6 +2,7 @@
   <div id="app">
     <Header v-if="notHome && Web3Ready"></Header>
     <router-view />
+    <MetaMaskModal v-if="show_metamask_modal" />
     <!-- <Footer/> -->
   </div>
 </template>
@@ -10,28 +11,50 @@
 import Home from "./components/Home.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import MetaMaskModal from "./components/modals/MetaMaskSetup.vue";
 
 export default {
   name: "App",
   components: {
     Home,
     Header,
-    Footer
+    Footer,
+    MetaMaskModal
   },
   computed: {
     notHome () {
       return !(this.$route.path === "/" || this.$route.path === "/home");
     },
     Web3Ready () {
-      console.log("this.$store.state.is_connected", this.$store.state)
-      console.log("this.$store.state.is_connected", this.$store.state.web3)
-      console.log("this.$store.state.is_connected", this.$store.state.web3.is_connected)
+      console.log("this.$store.state.is_connected", this.$store.state);
+      console.log("this.$store.state.is_connected", this.$store.state.web3);
+      console.log("this.$store.state.is_connected", this.$store.state.web3.is_connected);
       return this.$store.state.web3.is_connected;
     }
   },
   beforeCreate () {
     console.log("registerWeb3 Action dispatched from casino-dapp.vue");
     this.$store.dispatch("registerWeb3");
+  },
+  data () {
+    return {
+      show_metamask_modal: false
+    };
+  },
+  mounted () {
+    // Generic Modal
+    this.$eventBus.$on("openMetaMaskModal", () => {
+      console.log("openMetaMaskModal")
+      this.show_metamask_modal = true;
+    });
+    this.$eventBus.$on("closeMetaMaskModal", () => {
+      this.show_metamask_modal = false;
+    });
+  },
+  destroyed () {
+    // Generic Modal
+    this.$eventBus.$off("openMetaMaskModal");
+    this.$eventBus.$off("closeMetaMaskModal");
   }
 };
 </script>

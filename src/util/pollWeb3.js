@@ -26,7 +26,7 @@ let pollWeb3 = function (state) {
           } else if (parseInt(polledBalance, 10) !== store.state.web3.balance) {
             store.dispatch("pollWeb3", {
               coinbase: store.state.web3.coinbase,
-              balance: polledBalance
+              balance: parseInt(polledBalance, 10)
             });
           }
         });

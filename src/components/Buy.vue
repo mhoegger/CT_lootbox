@@ -47,12 +47,12 @@ export default {
   },
   methods: {
     buyPack () {
-      console.log("cont",this.$store.state.contractInstance());
+      console.log("cont", this.$store.state.contractInstance());
       this.$store.state.contractInstance().buyBox({
         gas: 300000,
         // value: this.$store.state.web3.web3Instance().toWei("0.1", "ether"),
         from: this.$store.state.web3.coinbase
-      },(err, result) => {
+      }, (err, result) => {
         if (err) {
           console.log(err);
         } else {

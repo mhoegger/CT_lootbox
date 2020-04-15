@@ -7,6 +7,8 @@ import { store } from "./store/";
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$eventBus = new Vue(); // Global event bus
+
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
@@ -15,3 +17,4 @@ new Vue({
   components: { App },
   template: "<App/>"
 });
+
