@@ -44,7 +44,7 @@ export default {
   mounted () {
     // Generic Modal
     this.$eventBus.$on("openMetaMaskModal", () => {
-      console.log("openMetaMaskModal")
+      console.log("openMetaMaskModal");
       this.show_metamask_modal = true;
     });
     this.$eventBus.$on("closeMetaMaskModal", () => {
