@@ -21,7 +21,7 @@ export const store = new Vuex.Store({
 
       web3Copy.is_connected = result.is_connected;
 
-      web3Copy.web3Instance = result.web3;
+      web3Copy.web3Instance = result.getWeb3Provider;
       state.web3 = web3Copy;
       pollWeb3();
     },
@@ -33,7 +33,31 @@ export const store = new Vuex.Store({
 
     registerContractInstance (state, payload) {
       console.log("Casino contract instance: ", payload);
-      state.contractInstance = () => payload;
+      state.contractInstance = payload;
+      console.log("Casino done: ");
+    },
+
+    addCardPendingInstance (state, payload) {
+      console.log("Add Card to pending pile: ", payload);
+      state.cardDeck.pending.push(payload);
+    },
+
+    moveCardPendingUnopenedInstance (state, payload) {
+      console.log("Remove Card from pending pile: ", payload.tx, payload.card_id);
+      let cards_to_move = state.cardDeck.pending.filter(obj => {
+        return obj.tx === payload.tx;
+      });
+      cards_to_move.forEach(card => {
+        card.card_id = payload.card_id;
+        state.cardDeck.unopened.push(card);
+      });
+      state.cardDeck.pending = state.cardDeck.pending.filter(obj => {
+        return obj.tx !== payload.tx;
+      });
+    },
+
+    getCardsOpenInstance (state, payload) {
+      Vue.set(state.cardDeck, "open", state.cardDeck.open.concat(payload));
     }
   },
   actions: {
@@ -54,10 +78,34 @@ export const store = new Vuex.Store({
     },
 
     getContractInstance ({commit}) {
-      getContract.then(result => {
-        commit("registerContractInstance", result);
-      }).catch(e => console.log(e));
-    }
+      commit("registerContractInstance", getContract());
+    },
 
+    addCardPending ({commit}, payload) {
+      commit("addCardPendingInstance", payload);
+    },
+
+    moveCardPendingUnopened ({commit}, payload) {
+      commit("moveCardPendingUnopenedInstance", payload);
+    },
+
+    getCardsOpen ({commit}) {
+      let interval = setInterval(() => {
+        if (state.contractInstance) {
+          state.contractInstance().getCards.call({
+            from: state.web3.coinbase
+          }, function (err, res) {
+            if (err) {
+              console.log(err);
+            } else {
+              commit("getCardsOpenInstance", res);
+            }
+          });
+          clearInterval(interval);
+        } else {
+          store.dispatch("getCardsOpen");
+        }
+      }, 500);
+    }
   }
 });

@@ -8,6 +8,11 @@ let state = {
     error: null,
     is_connected: false
   },
-  contractInstance: null
+  contractInstance: null,
+  cardDeck: {
+    pending: [],
+    unopened: [],
+    open: []
+  }
 };
 export default state;

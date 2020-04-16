@@ -47,7 +47,7 @@ export default {
       this.pending = true;
       this.$store.state.contractInstance().bet(event.target.innerHTML, {
         gas: 300000,
-        value: this.$store.state.web3.web3Instance().toWei(this.amount, "ether"),
+        value: this.$store.state.web3.web3Instance().toWei(this.amount, "ether").fromWei(),
         from: this.$store.state.web3.coinbase
       }, (err, result) => {
         if (err) {

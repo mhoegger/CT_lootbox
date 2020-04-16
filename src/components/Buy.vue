@@ -49,17 +49,33 @@ export default {
     buyPack () {
       console.log("cont", this.$store.state.contractInstance());
       this.$store.state.contractInstance().buyBox({
-        gas: 300000,
-        // value: this.$store.state.web3.web3Instance().toWei("0.1", "ether"),
+        gasPrice: 300000000,
+        // gas: 3000000000,
+        value: this.$store.state.web3.web3Instance().toWei("0.1", "ether"),
         from: this.$store.state.web3.coinbase
-      }, (err, result) => {
+      }, (err, tx) => {
         if (err) {
           console.log(err);
         } else {
-          console.log(result);
+          let BoxContent = this.$store.state.contractInstance().BoxContent();
+          BoxContent.watch((err, result) => {
+            if (err) {
+              console.log("could not get event Won()");
+            } else {
+              let winEvent = result.args;
+              console.log(winEvent);
+              console.log(winEvent.card);
+              console.log(winEvent.card.toNumber());
+              this.$store.dispatch("moveCardPendingUnopened", {tx: tx, card_id: winEvent.card.toNumber()});
+            }
+          });
+          console.log("TX", tx);
+          this.$store.dispatch("addCardPending", {
+            tx: tx,
+            time_issued: Date.now()
+          });
         }
       });
-      console.log("TODO: buy");
       return true;
     }
   }
