@@ -1,13 +1,13 @@
 pragma solidity >0.4.10;
 
 contract LootAccount{
-    
+
     struct Loot {
         uint[42] cards;
     }
-    
+
     mapping (address => Loot) LootAccounts ;
-    
+
     function buyBox() public payable returns (uint) {
         require(0.1 ether == msg.value);
         uint seed = uint(blockhash(block.number - 1)) % 1000 + 1;
@@ -32,9 +32,10 @@ contract LootAccount{
             return number % 2 + 40 ;
         }
     }
-    
-    function getCards() public view returns (uint[42]){
-        return LootAccounts[msg.sender].cards;
+
+    function getCards() public view returns (uint[42] memory) {
+        Loot memory loot = LootAccounts[msg.sender];
+        return loot.cards;
     }
-    
+
 }
