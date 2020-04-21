@@ -1,10 +1,20 @@
-pragma solidity >0.4.10;
+pragma solidity =0.5.17;
+pragma experimental ABIEncoderV2;
 
 contract LootAccount{
+
 
     struct Loot {
         uint[42] cards;
     }
+
+    struct Offering{
+        uint cardNumber;
+        uint price ;
+        address seller;
+    }
+
+    Offering[] offerings;
 
     event generatedCard(uint cardNumber, address owner);
     event boughtCard(address owner);
@@ -64,4 +74,35 @@ contract LootAccount{
         return loot.cards;
     }
 
+    function createListing(uint cardNumber, uint myprice ) public returns (bool) {
+        require (LootAccounts[msg.sender].cards[cardNumber] > 0, "You have no Card to sell");
+        Offering memory myOffering = Offering(cardNumber, myprice, msg.sender);
+        offerings.push(myOffering);
+        LootAccounts[msg.sender].cards[cardNumber]--;
+        return true;
+    }
+
+    function getListings() external view returns(Offering[] memory ) {
+        return offerings;
+    }
+    function buyCard(uint index ,uint mycardNumber, uint myprice, address myseller) public payable returns (bool) {
+        require(offerings[index].cardNumber == mycardNumber,"Order not availible anymore");
+        require(offerings[index].price == myprice,"Order not availible anymore");
+        require(offerings[index].seller == myseller,"Order not availible anymore");
+        require(index < offerings.length,"Order not availible anymore");
+        require(msg.value == offerings[index].price,"not enogh Funds provided");
+        (bool success, ) = offerings[index].seller.call.value(msg.value)("");
+        require(success, "Transfer failed.");
+        removeOffering(index);
+        LootAccounts[msg.sender].cards[mycardNumber]++;
+
+    }
+    function removeOffering(uint index) internal  {
+
+        for (uint i = index; i<offerings.length-1; i++){
+            offerings[i] = offerings[i+1];
+        }
+        offerings.length--;
+
+    }
 }

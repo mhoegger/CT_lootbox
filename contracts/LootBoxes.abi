@@ -32,6 +32,7 @@
 		"type": "event"
 	},
 	{
+		"constant": false,
 		"inputs": [],
 		"name": "buyBox",
 		"outputs": [
@@ -41,10 +42,74 @@
 				"type": "bool"
 			}
 		],
+		"payable": true,
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "mycardNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "myprice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "myseller",
+				"type": "address"
+			}
+		],
+		"name": "buyCard",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "cardNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "myprice",
+				"type": "uint256"
+			}
+		],
+		"name": "createListing",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
 		"inputs": [],
 		"name": "getCards",
 		"outputs": [
@@ -54,10 +119,44 @@
 				"type": "uint256[42]"
 			}
 		],
+		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "getListings",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "cardNumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					}
+				],
+				"internalType": "struct LootAccount.Offering[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
 		"inputs": [],
 		"name": "getRevealBlockNumber",
 		"outputs": [
@@ -67,10 +166,12 @@
 				"type": "uint256"
 			}
 		],
+		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
+		"constant": true,
 		"inputs": [],
 		"name": "isItReadyYet",
 		"outputs": [
@@ -80,10 +181,12 @@
 				"type": "bool"
 			}
 		],
+		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
+		"constant": false,
 		"inputs": [],
 		"name": "revealBox",
 		"outputs": [
@@ -93,6 +196,7 @@
 				"type": "uint256"
 			}
 		],
+		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
