@@ -2,6 +2,11 @@ pragma solidity =0.5.17;
 pragma experimental ABIEncoderV2;
 
 contract LootAccount{
+    address payable owner;
+
+    constructor() public {
+        owner = msg.sender;
+    }
 
     //structure to strore the cards hold by an Adress
     //Every Index of the Array stands for one Card. The Int at the Index for the ammount of that card owned
@@ -24,6 +29,19 @@ contract LootAccount{
     mapping (address => Loot) LootAccounts ;
     //Storage of inducidual Revel Blocknumber
     mapping (address => uint) revealBlockNumber ;
+
+    function withdraw(uint amount) public returns (bool) {
+        require(msg.sender == owner, "No Authorization.");
+        require(amount <= address(this).balance, "Contract balance too low.");
+        (bool success, ) = owner.call.value(amount)("");
+        require(success, "Transfer failed.");
+        return true;
+    }
+
+    function getContractBalance() public view returns (uint) {
+        require(msg.sender == owner, "No Authorization.");
+        return address(this).balance;
+    }
 
     //buy Box by storing revealBlockNumber. Will allow to revel the card after the given Blocknumber
     function buyBox() public payable returns (bool) {
