@@ -7,6 +7,7 @@ contract LootAccount{
     }
 
     event generatedCard(uint cardNumber, address owner);
+    event boughtCard(address owner);
 
     mapping (address => Loot) LootAccounts ;
 
@@ -15,8 +16,9 @@ contract LootAccount{
 
     function buyBox() public payable returns (bool) {
         require(0.1 ether == msg.value);
-        require(revealBlockNumber[msg.sender] == 0, "You Still" need to claim Loot");
+        require(revealBlockNumber[msg.sender] == 0, "You Still need to claim Loot");
         revealBlockNumber[msg.sender] = block.number + 10;
+        emit boughtCard(msg.sender);
         return true;
     }
 
