@@ -6,19 +6,43 @@ contract LootAccount{
         uint[42] cards;
     }
 
+    event generatedCard(uint cardNumber, address owner);
+
     mapping (address => Loot) LootAccounts ;
 
-    function buyBox() public payable returns (uint) {
+    mapping (address => uint) revealBlockNumber ;
+
+
+    function buyBox() public payable returns (bool) {
         require(0.1 ether == msg.value);
-        uint seed = uint(blockhash(block.number - 1)) % 1000 + 1;
+        require(revealBlockNumber[msg.sender] == 0, "You Still" need to claim Loot");
+        revealBlockNumber[msg.sender] = block.number + 10;
+        return true;
+    }
+
+    function getRevealBlockNumber() public view returns (uint) {
+        return revealBlockNumber[msg.sender];
+    }
+
+    function isItReadyYet() public view returns (bool) {
+        if ( revealBlockNumber[msg.sender] == 0 ) {
+            return false;
+        }
+        return block.number > revealBlockNumber[msg.sender];
+    }
+
+
+    function revealBox() public returns (uint) {
+        require(revealBlockNumber[msg.sender] != 0, "There has no Box been bought");
+        require(block.number > revealBlockNumber[msg.sender], "Time has not come yet");
+        uint seed = uint(blockhash(revealBlockNumber[msg.sender])) % 1000 + 1;
+        revealBlockNumber[msg.sender] = 0;
         uint card = getCard(seed);
-        //Loot memory loot = LootAccounts[msg.sender];
-        //loot.cards[card]++;
         LootAccounts[msg.sender].cards[card]++;
-        //return LootAccounts[msg.sender].cards;
-        //return loot.cards;
+        emit generatedCard(card, msg.sender);
         return card;
     }
+
     function getCard(uint number) private pure returns (uint){
         if ( number < 741 ) {
             return number % 22  ;
