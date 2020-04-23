@@ -12,7 +12,10 @@
     <div class="container">
       <h3>open cards</h3>
       <div class="card-grid">
-        <Card v-for="(card, index) in open_cards" :key="index"></Card>
+        <div v-for="(card, index) in open_cards" :key="index">
+          <Card v-if="card>0"></Card>
+
+        </div>
       </div>
     </div>
   </div>
@@ -23,7 +26,7 @@ import Card from "./Card";
 
 export default {
   name: "Inventory",
-  data() {
+  data () {
     return {};
   },
   props: {},
@@ -31,20 +34,20 @@ export default {
     Card
   },
   computed: {
-    pending_cards() {
+    pending_cards () {
       return this.$store.state.cardDeck.pending;
     },
-    unopened_cards() {
+    unopened_cards () {
       return this.$store.state.cardDeck.unopened;
     },
-    open_cards() {
+    open_cards () {
       console.log(
         "this.$store.state.cardDeck.open",
         this.$store.state.cardDeck.open
       );
       let open_card = Object.assign(
         {},
-        this.$store.state.cardDeck.open.map(x => x.toNumber())
+        this.$store.state.cardDeck.open
       );
       let unopen_card = this.$store.state.cardDeck.unopened;
       unopen_card.forEach(card_id => {
@@ -54,11 +57,12 @@ export default {
       return open_card;
     }
   },
-  created() {
+  created () {
     console.log("dispatching getContractInstance");
     // this.$store.dispatch("getContractInstance");
+
   },
-  mounted() {
+  mounted () {
     this.$store.dispatch("getContractInstance");
 
     console.log("dispatching getCardsOpen");

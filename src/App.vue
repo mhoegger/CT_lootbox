@@ -29,32 +29,58 @@ export default {
       console.log("this.$store.state.is_connected", this.$store.state);
       console.log("this.$store.state.is_connected", this.$store.state.web3);
       console.log("this.$store.state.is_connected", this.$store.state.web3.is_connected);
-      return this.$store.state.web3.is_connected;
+      return this.$store.state.web3.is_connected && this.$store.state.web3.web3Instance().eth;
     }
   },
   beforeCreate () {
     console.log("registerWeb3 Action dispatched from casino-dapp.vue");
-    this.$store.dispatch("registerWeb3");
   },
   data () {
     return {
-      show_metamask_modal: false
+      show_metamask_modal: false,
+      block_number_subscription: null
     };
   },
   mounted () {
-    // Generic Modal
-    this.$eventBus.$on("openMetaMaskModal", () => {
-      console.log("openMetaMaskModal");
-      this.show_metamask_modal = true;
-    });
-    this.$eventBus.$on("closeMetaMaskModal", () => {
-      this.show_metamask_modal = false;
+    this.$store.dispatch("registerWeb3").then(res => {
+      console.log("****RES****", res);
+      if (res) {
+        // Generic Modal
+        this.$eventBus.$on("openMetaMaskModal", () => {
+          console.log("openMetaMaskModal");
+          this.show_metamask_modal = true;
+        });
+        this.$eventBus.$on("closeMetaMaskModal", () => {
+          this.show_metamask_modal = false;
+        });
+
+        this.block_number_subscription = this.$store.state.web3.web3Instance().eth.subscribe(
+          "newBlockHeaders",
+          function (error, result) {
+            if (!error) {
+              return;
+            }
+            console.error(error);
+          })
+          .on("data",  (blockHeader) => {
+            console.log("blockNumber", blockHeader.number);
+            this.$store.dispatch("checkBoxReveal", blockHeader.number);
+            this.$store.dispatch("getRevealBox");
+          })
+          .on("error", console.error);
+      }
     });
   },
   destroyed () {
     // Generic Modal
     this.$eventBus.$off("openMetaMaskModal");
     this.$eventBus.$off("closeMetaMaskModal");
+    // unsubscribes the subscription
+    this.block_number_subscription.unsubscribe(function (error, success) {
+      if (success) {
+        console.log("Successfully unsubscribed!");
+      }
+    });
   }
 };
 </script>

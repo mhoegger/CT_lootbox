@@ -11,6 +11,9 @@ let state = {
   contractInstance: null,
   cardDeck: {
     pending: [],
+    bought: [],
+    ready: [],
+    revealing: [],
     unopened: [],
     open: []
   }

@@ -47,36 +47,37 @@ export default {
   },
   methods: {
     buyPack () {
-      console.log("cont", this.$store.state.contractInstance());
-      this.$store.state.contractInstance().buyBox({
-        gasPrice: 300000000,
-        // gas: 3000000000,
-        value: this.$store.state.web3.web3Instance().toWei("0.1", "ether"),
+      console.log("cont", this.$store.state.contractInstance().methods);
+      console.log("web333", this.$store.state.web3.web3Instance());
+      console.log("seend", this.$store.state.web3.coinbase, this.$store.state.web3.web3Instance().utils.toWei("0.1", "ether"));
+      let transaction = null;
+      this.$store.state.contractInstance().methods.buyBox().send({
+        value: this.$store.state.web3.web3Instance().utils.toWei("0.1", "ether"),
         from: this.$store.state.web3.coinbase
-      }, (err, tx) => {
-        if (err) {
-          console.log(err);
-        } else {
-          let BoxContent = this.$store.state.contractInstance().BoxContent();
-          BoxContent.watch((err, result) => {
-            if (err) {
-              console.log("could not get event Won()");
-            } else {
-              let winEvent = result.args;
-              console.log(winEvent);
-              console.log(winEvent.card);
-              console.log(winEvent.card.toNumber());
-              this.$store.dispatch("moveCardPendingUnopened", {tx: tx, card_id: winEvent.card.toNumber()});
-            }
+      }).on("transactionHash", (tx) => {
+        console.log("TX", tx);
+        transaction = tx;
+        // Add to pending
+        this.$store.dispatch("addCardPending", {
+          tx: tx,
+          time_issued: Date.now()
+        });
+        // subscribe to event
+        this.$store.state.contractInstance().events.boughtCard()
+          .on("data", (result) => {
+            console.log("result.args", result.args);
+            this.$store.dispatch("moveCardPendingBought", {tx: tx});
+          })
+          .on("error", (err) => {
+            console.log("1112", err);
           });
-          console.log("TX", tx);
-          this.$store.dispatch("addCardPending", {
-            tx: tx,
-            time_issued: Date.now()
-          });
-        }
+      }).on("error", (error) => {
+        console.log("error", error);
+        // Add to pending
+        this.$store.dispatch("removeCardPending", {
+          tx: transaction,
+        });
       });
-      return true;
     }
   }
 };
