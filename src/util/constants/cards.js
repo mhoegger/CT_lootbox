@@ -16,9 +16,21 @@ function getCard (id) {
       "name": "paul",
       "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.O0gRMLwY-Dr_1IZa1xmwngAAAA%26pid%3DApi&f=1",
       "rarity": "legendary"
-
     };
-
+  cards["3"] =
+    {
+      "text": "even derpier dino",
+      "name": "longnek",
+      "image": require("@/assets/derpino_marius.png"),
+      "rarity": "epic"
+    };
+  cards["4"] =
+    {
+      "text": "even derpierer dino",
+      "name": "bluedude",
+      "image": require("@/assets/derpino2.png"),
+      "rarity": "epic"
+    };
   return cards[id];
 }
 export default getCard;

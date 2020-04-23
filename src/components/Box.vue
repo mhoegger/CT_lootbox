@@ -1,16 +1,10 @@
 <template>
-  <div class="card-wrapper">
-    <div class="card" v-bind:class="getCardRarity((this.id % 4) + 1)">
-      <div class="card-image-wrapper">
-        <img v-bind:src="getImageURl((this.id % 4) + 1)" alt />
-      </div>
-      <div class='card-info-wrapper'>
-          <h4>name: {{getCardName((this.id % 4) + 1)}}</h4>
-          <p>text: {{getCardText((this.id % 4) + 1)}}</p>
-          <p>id: {{this.id}}</p>
-          <p>amount: {{this.count}}</p>
-      </div>
-    </div>
+  <div class="card-wrapper" >
+    <div class="card" @click="box.click" v-bind:class="getCardRarity(1)">
+
+    <p>ID/Tx: {{box.tx}}</p>
+    <p>Content: {{box}}</p>
+  </div>
   </div>
 </template>
 
@@ -18,13 +12,12 @@
 import getCard from "./../util/constants/cards";
 
 export default {
-  name: "Card",
+  name: "Box",
   data() {
     return {};
   },
   props: {
-    id: String,
-    count: String,
+    box: Object,
   },
   components: {},
   methods: {

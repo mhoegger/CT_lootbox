@@ -65,9 +65,14 @@ export default {
           .on("data",  (blockHeader) => {
             console.log("blockNumber", blockHeader.number);
             this.$store.dispatch("checkBoxReveal", blockHeader.number);
-            this.$store.dispatch("getRevealBox");
           })
           .on("error", console.error);
+        this.$store.state.web3.web3Instance().eth.getBlockNumber().then(block => {
+          console.log("blockNumberrr", block)
+          this.$store.dispatch("checkBoxReveal", block);
+
+        })
+
       }
     });
   },

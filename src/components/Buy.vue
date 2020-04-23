@@ -66,7 +66,15 @@ export default {
         this.$store.state.contractInstance().events.boughtCard()
           .on("data", (result) => {
             console.log("result.args", result.args);
-            this.$store.dispatch("moveCardPendingBought", {tx: tx});
+            this.$store.dispatch("getRevealBlockNumber").then(res => {
+              this.$store.dispatch("moveCardPendingBought", {
+                tx: tx,
+                revealblock: res
+              });
+
+            });
+
+
           })
           .on("error", (err) => {
             console.log("1112", err);

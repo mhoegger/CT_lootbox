@@ -11,18 +11,52 @@
     <p>{{`opened_cards ${open_cards} ${open_cards.length}`}}</p>
     <div class="container">
       <h3>open cards</h3>
+      <div class="card-grid" >
+        <div v-for="(card, index) in open_cards" :key="index" v-if="card >0 " >
+          <Card :id="index" :count="card"></Card>
+        </div>
+      </div>
+
+      <h3>pending cards (not mined yet)</h3>
       <div class="card-grid">
-        <div v-for="(card, index) in open_cards" :key="index">
-          <Card v-if="card>0"></Card>
+        <div v-for="(card, index) in pending_cards" :key="index">
+          <Box :box="card"></Box>
+        </div>
+      </div>
+
+      <h3>bougth cards (not reveald)</h3>
+      <div class="card-grid">
+        <div v-for="(card, index) in bought_cards" :key="index">
+          <Box :box="card"></Box>
 
         </div>
       </div>
+
+      <h3>ready cards (not reveald)</h3>
+      {{ready_cards}}
+      <div class="card-grid">
+        <div v-for="(card, index) in ready_cards" :key="index">
+          <Box :box="card"></Box>
+
+        </div>
+      </div>
+
+      <h3>revealing</h3>
+      {{ready_cards}}
+      <div class="card-grid">
+        <div v-for="(card, index) in revealing_cards" :key="index">
+          <Box :box="card"></Box>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import Card from "./Card";
+import Box from "./Box";
 
 export default {
   name: "Inventory",
@@ -31,11 +65,21 @@ export default {
   },
   props: {},
   components: {
-    Card
+    Card,
+    Box
   },
   computed: {
     pending_cards () {
       return this.$store.state.cardDeck.pending;
+    },
+    bought_cards () {
+      return this.$store.state.cardDeck.bought;
+    },
+    ready_cards () {
+      return this.$store.state.cardDeck.ready;
+    },
+    revealing_cards () {
+      return this.$store.state.cardDeck.revealing;
     },
     unopened_cards () {
       return this.$store.state.cardDeck.unopened;

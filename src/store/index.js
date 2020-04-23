@@ -37,9 +37,11 @@ export const store = new Vuex.Store({
       console.log("Casino done: ");
     },
 
-    addCardPendingInstance (state, payload) {
-      console.log("Add Card to pending pile: ", payload);
-      state.cardDeck.pending.push(payload);
+    addCardInstance (state, payload) {
+      let pile = payload.to;
+      delete payload.to;
+      console.log("Add Card to ", pile ," pile: ", payload);
+      state.cardDeck[pile].push(payload);
     },
 
     removeCardPendingInstance (state, payload) {
@@ -76,6 +78,11 @@ export const store = new Vuex.Store({
   },
 
   actions: {
+    /**
+     *
+     * @param commit
+     * @return {Promise<unknown>}
+     */
     registerWeb3 ({commit}) {
       return new Promise((resolve, reject) => {
         console.log("registerWeb3 Action being executed");
@@ -93,27 +100,59 @@ export const store = new Vuex.Store({
 
     },
 
+    /**
+     *
+     * @param commit
+     * @param payload
+     */
     pollWeb3 ({commit}, payload) {
       console.log("pollWeb3 action being executed");
       commit("pollWeb3Instance", payload);
     },
 
+    /**
+     *
+     * @param commit
+     */
     getContractInstance ({commit}) {
       commit("registerContractInstance", getContract());
     },
 
+    // Add- Remove Pending
+    /**
+     *
+     * @param commit
+     * @param payload
+     */
     addCardPending ({commit}, payload) {
-      commit("addCardPendingInstance", payload);
+      payload.to = "pending";
+      commit("addCardInstance", payload);
+      payload.click = () => {
+        console.log("Do Nothing");
+      };
     },
 
     removeCardPending ({commit}, payload) {
       commit("removeCardPendingInstance", payload);
     },
 
+    // Move cards
     moveCardPendingBought ({commit}, payload) {
       payload.from = "pending";
       payload.to = "bought";
+      payload.click = () => {
+        console.log("Do Nothing");
+      };
       commit("moveCardInstance", payload);
+    },
+
+    addCardReady ({commit}, payload) {
+      payload.to = "ready";
+      payload.click = () => {
+        console.log("clickEvent");
+        store.dispatch("getRevealBox");
+      };
+      commit("addCardInstance", payload);
     },
 
     moveCardBoughtReady ({commit}, payload) {
@@ -121,11 +160,17 @@ export const store = new Vuex.Store({
       payload.to = "ready";
       payload.click = () => {
         store.dispatch("getRevealBox");
-      }
+      };
       commit("moveCardInstance", payload);
     },
 
-    moveCardRevealingBought ({commit}, payload) {
+    moveCardReadyRevealing ({commit}, payload) {
+      payload.from = "ready";
+      payload.to = "revealing";
+      commit("moveCardInstance", payload);
+    },
+
+    moveCardRevealingReady ({commit}, payload) {
       payload.from = "revealing";
       payload.to = "bought";
       commit("moveCardInstance", payload);
@@ -139,7 +184,7 @@ export const store = new Vuex.Store({
 
     getCardsOpen ({commit}) {
       if (state.contractInstance && state.web3.coinbase) {
-        console.log("state.web3.coinbase", state.web3.coinbase)
+        console.log("state.web3.coinbase", state.web3.coinbase);
         state.contractInstance().methods.getCards().call({
           from: state.web3.coinbase
         }).then(res => {
@@ -156,21 +201,23 @@ export const store = new Vuex.Store({
     },
 
     getRevealBlockNumber ({commit}) {
-      if (state.contractInstance) {
-        state.contractInstance().methods.revealBlockNumber().call({
-          from: state.web3.coinbase
-        }, function (err, res) {
-          if (err) {
-            console.log(err);
-          } else {
-            commit("getRevealBlockNumberInstance", res);
-          }
-        });
-      } else {
-        setTimeout(() => {
-          store.dispatch("getRevealBlockNumber");
-        }, 500);
-      }
+      return new Promise((resolve, reject) => {
+        if (state.contractInstance) {
+          state.contractInstance().methods.getRevealBlockNumber().call({
+            from: state.web3.coinbase
+          }, function (err, res) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(res);
+            }
+          });
+        } else {
+          resolve(setTimeout(() => {
+            store.dispatch("getRevealBlockNumber");
+          }, 500));
+        }
+      });
     },
 
     getIsReady ({commit}) {
@@ -204,12 +251,13 @@ export const store = new Vuex.Store({
           }).on("transactionHash", (tx) => {
             transaction = tx;
             console.log("TX", tx);
-            let card_to_move = state.cardDeck.revealing[state.cardDeck.revealing.length - 1];
+            let card_to_move = state.cardDeck.ready[state.cardDeck.ready.length - 1];
+            console.log(card_to_move)
             // Add to pending
-            /*store.dispatch("moveCardBoughtRevealing", {
+            store.dispatch("moveCardReadyRevealing", {
               tx: card_to_move.tx,
               time_issued: Date.now()
-            });*/
+            });
             // subscribe to event
             store.state.contractInstance().events.generatedCard()
               .on("data", (result) => {
@@ -219,24 +267,22 @@ export const store = new Vuex.Store({
                 });
               })
               .on("error", (err) => {
-                console.log("1112", err);
+                // Add to pending
+                store.dispatch("moveCardBoughtRevealing", {
+                  tx: transaction
+                });
               });
           }).on("error", (error) => {
             console.log("error", error);
-            // Add to pending
-            store.dispatch("removeCardPending", {
-              tx: transaction,
-            });
           });
         } else {
           console.log("NOT Ready");
         }
       })
-
     },
 
     checkBoxReveal({commit}, payload) {
-      let reveal_reached = state.cardDeck.bought.filter(card => card.revealblock <= payload);
+      let reveal_reached = state.cardDeck.bought.filter(card => card.revealblock < payload);
       console.log("Cards to Reveal:", reveal_reached);
       reveal_reached.forEach(card => {
         let card_to_move = state.cardDeck.bought[state.cardDeck.bought.length - 1];
@@ -245,18 +291,18 @@ export const store = new Vuex.Store({
         });
       });
       store.dispatch("getIsReady").then(res => {
-        console.log("checkBoxReveal", res)
-        let card_to_move = state.cardDeck.bought[state.cardDeck.bought.length - 1];
-
-        if (res && card_to_move) {
-          console.log("Cards to Reveal getIsReady:", card_to_move);
-
-          store.dispatch("moveCardBoughtReady", {
-            tx: card_to_move.tx
+        console.log("checkBoxReveal", "getIsReady", res, reveal_reached.length <= 0, reveal_reached)
+        if (res && reveal_reached.length <= 0 && state.cardDeck.ready.length <= 0 && state.cardDeck.revealing.length <= 0) {
+          const id = Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16);
+          console.log("Box is ready, but on Bought-pile, adding new card with id: ", id)
+          // card is ready but no in store
+          store.dispatch("addCardReady", {
+            tx: id,
+            revealblock: payload
           });
         }
-      })
-
+      });
     }
   }
 });
