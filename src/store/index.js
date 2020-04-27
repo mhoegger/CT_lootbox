@@ -90,13 +90,12 @@ export const store = new Vuex.Store({
           console.log("committing result to registerWeb3Instance mutation", result);
           commit("registerWeb3Instance", result);
           resolve(true);
-
         }).catch(e => {
           console.log("error in action registerWeb3", e);
           Vue.prototype.$eventBus.$emit("openMetaMaskModal", "open");
-          reject(e);
+          resolve(false);
         });
-      })
+      });
 
     },
 
@@ -146,6 +145,14 @@ export const store = new Vuex.Store({
       commit("moveCardInstance", payload);
     },
 
+    addCardBought ({commit}, payload) {
+      payload.to = "bought";
+      payload.click = () => {
+        console.log("Do Nothing");
+      };
+      commit("addCardInstance", payload);
+    },
+
     addCardReady ({commit}, payload) {
       payload.to = "ready";
       payload.click = () => {
@@ -167,18 +174,39 @@ export const store = new Vuex.Store({
     moveCardReadyRevealing ({commit}, payload) {
       payload.from = "ready";
       payload.to = "revealing";
+      payload.click = () => {
+        console.log("Do Nothing");
+      };
       commit("moveCardInstance", payload);
     },
 
     moveCardRevealingReady ({commit}, payload) {
       payload.from = "revealing";
-      payload.to = "bought";
+      payload.to = "ready";
+      payload.click = () => {
+        store.dispatch("getRevealBox");
+      };
       commit("moveCardInstance", payload);
     },
 
     moveCardRevealingUnopened ({commit}, payload) {
       payload.from = "revealing";
       payload.to = "unopened";
+      payload.click = () => {
+        console.log("Open Bom with content:", payload.content);
+        Vue.prototype.$eventBus.$emit("openOpenBox");
+        store.dispatch("moveCardUnopenedOpen", payload);
+        store.dispatch("getCardsOpen");
+      };
+      commit("moveCardInstance", payload);
+    },
+
+    moveCardUnopenedOpen ({commit}, payload) {
+      payload.from = "unopened";
+      payload.to = "open";
+      payload.click = () => {
+        console.log("Do Nothing");
+      };
       commit("moveCardInstance", payload);
     },
 
@@ -263,12 +291,13 @@ export const store = new Vuex.Store({
               .on("data", (result) => {
                 console.log("result.args", result.args);
                 store.dispatch("moveCardRevealingUnopened", {
-                  tx: card_to_move.tx
+                  tx: card_to_move.tx,
+                  content: result
                 });
               })
               .on("error", (err) => {
                 // Add to pending
-                store.dispatch("moveCardBoughtRevealing", {
+                store.dispatch("moveCardRevealingReady", {
                   tx: transaction
                 });
               });
@@ -295,14 +324,28 @@ export const store = new Vuex.Store({
         if (res && reveal_reached.length <= 0 && state.cardDeck.ready.length <= 0 && state.cardDeck.revealing.length <= 0) {
           const id = Math.floor((1 + Math.random()) * 0x10000)
             .toString(16);
-          console.log("Box is ready, but on Bought-pile, adding new card with id: ", id)
+          console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id)
           // card is ready but no in store
           store.dispatch("addCardReady", {
             tx: id,
             revealblock: payload
           });
         }
+        store.dispatch("getRevealBlockNumber").then(block_nr => {
+          console.log("block_nr", block_nr)
+          if (!res && block_nr !== "0" && state.cardDeck.bought.length <= 0) {
+            const id = Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16);
+            console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id)
+            // card is ready but no in store
+            store.dispatch("addCardBought", {
+              tx: id,
+              revealblock: block_nr
+            });
+          }
+        });
       });
+
     }
   }
 });

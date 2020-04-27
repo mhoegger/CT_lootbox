@@ -42,9 +42,18 @@
       </div>
 
       <h3>revealing</h3>
-      {{ready_cards}}
+      {{revealing_cards}}
       <div class="card-grid">
         <div v-for="(card, index) in revealing_cards" :key="index">
+          <Box :box="card"></Box>
+
+        </div>
+      </div>
+
+      <h3>unopened</h3>
+      {{unopened_cards}}
+      <div class="card-grid">
+        <div v-for="(card, index) in unopened_cards" :key="index">
           <Box :box="card"></Box>
 
         </div>
@@ -104,7 +113,6 @@ export default {
   created () {
     console.log("dispatching getContractInstance");
     // this.$store.dispatch("getContractInstance");
-
   },
   mounted () {
     this.$store.dispatch("getContractInstance");

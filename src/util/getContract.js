@@ -11,3 +11,4 @@ function getContract () {
   return casinoContractInstance;
 }
 export default getContract;
+
