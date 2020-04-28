@@ -3,9 +3,11 @@ pragma experimental ABIEncoderV2;
 
 contract LootAccount{
     address payable owner;
+    uint idCount;
 
     constructor() public {
         owner = msg.sender;
+        idCount = 0;
     }
 
     //structure to strore the cards hold by an Adress
@@ -15,6 +17,7 @@ contract LootAccount{
     }
     //Structure to store a sell offer
     struct Offering{
+        uint offeringId;
         uint cardNumber;
         uint price ;
         address seller;
@@ -24,6 +27,10 @@ contract LootAccount{
 
     event generatedCard(uint cardNumber, address owner);
     event boughtCard(address owner);
+
+    event offeringCreated(uint offeringId, uint cardNumber, uint price ,address seller);
+    event offeringBought(uint offeringId, uint cardNumber, uint price ,address seller, address buyer);
+    event offeringWithdrawn(uint offeringId, uint cardNumber, uint price ,address seller);
 
     //mapping of Account to Loot owned
     mapping (address => Loot) LootAccounts ;
@@ -106,12 +113,13 @@ contract LootAccount{
         return loot.cards;
     }
     //create an offering to sell a card. Whenever it is created, the Card is transferd aout of the Loot of the Adress.
-    function createListing(uint cardNumber, uint myprice ) public returns (bool) {
+    function createOffering(uint cardNumber, uint myprice ) public returns (bool) {
         require (LootAccounts[msg.sender].cards[cardNumber] > 0, "You have no Card to sell");
-        Offering memory myOffering = Offering(cardNumber, myprice, msg.sender);
+        Offering memory myOffering = Offering(idCount++,cardNumber, myprice, msg.sender);
         offerings.push(myOffering);
         //transfer Card out off Account
         LootAccounts[msg.sender].cards[cardNumber]--;
+        emit offeringCreated(myOffering.offeringId ,myOffering.cardNumber , myOffering.price ,myOffering.seller);
         return true;
     }
     //get all the Sell Offers
@@ -120,21 +128,24 @@ contract LootAccount{
     }
     // Buy a Card that is offerd
     //in order to be sure to match the right Offering, the index in the Offeringlist and all the data of the Offering is needed to be pased
-    function buyCard(uint index ,uint mycardNumber, uint myprice, address myseller) public payable returns (bool) {
+    function buyCardFromOffering(uint index ,uint myOfferingId ) public payable returns (bool) {
         //check the Offering at the index is the one we want
-        require(offerings[index].cardNumber == mycardNumber,"Order not availible anymore");
-        require(offerings[index].price == myprice,"Order not availible anymore");
-        require(offerings[index].seller == myseller,"Order not availible anymore");
+        require(offerings[index].offeringId == myOfferingId,"Order not availible anymore");
         require(index < offerings.length,"Order not availible anymore");
         // check that we have sent the right ammount of money
         require(msg.value == offerings[index].price,"not enogh Funds provided");
         // send the Money to the seller
         (bool success, ) = offerings[index].seller.call.value(msg.value)("");
         require(success, "Transfer failed.");
+        uint mycardNumber = offerings[index].cardNumber;
+        uint myprice = offerings[index].price;
+        address myseller =  offerings[index].seller;
         //remove offering
         removeOffering(index);
         //add Card to Buyers Loot
         LootAccounts[msg.sender].cards[mycardNumber]++;
+        emit offeringBought(myOfferingId, mycardNumber, myprice, myseller, msg.sender);
+        return true;
     }
     //utility to remove an offering from the offerings
     function removeOffering(uint index) internal  {
@@ -145,14 +156,17 @@ contract LootAccount{
         offerings.length--;
 
     }
-    function withdrawOffering(uint index ,uint mycardNumber, uint myprice) public  {
+    function withdrawOffering(uint index , uint myOfferingId)  public returns (bool) {
         //check the Offering at the index is the one we want
-        require(offerings[index].cardNumber == mycardNumber,"Order not availible anymore");
-        require(offerings[index].price == myprice,"Order not availible anymore");
-        require(offerings[index].seller == msg.sender,"Order not availible anymore");
+        require(offerings[index].offeringId == myOfferingId,"Order not availible anymore");
         //remove offering
+        uint mycardNumber = offerings[index].cardNumber;
+        uint myprice = offerings[index].price;
+        address myseller =  offerings[index].seller;
         removeOffering(index);
         //add Card back to Sellers Loot
         LootAccounts[msg.sender].cards[mycardNumber]++;
+        emit offeringWithdrawn( myOfferingId, mycardNumber, myprice , myseller);
+        return true;
     }
 }

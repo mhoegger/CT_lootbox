@@ -38,6 +38,105 @@
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "offeringId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "cardNumber",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			}
+		],
+		"name": "offeringBought",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "offeringId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "cardNumber",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "offeringCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "offeringId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "cardNumber",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "offeringWithdrawn",
+		"type": "event"
+	},
+	{
 		"constant": false,
 		"inputs": [],
 		"name": "buyBox",
@@ -62,21 +161,11 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "mycardNumber",
+				"name": "myOfferingId",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "myprice",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "myseller",
-				"type": "address"
 			}
 		],
-		"name": "buyCard",
+		"name": "buyCardFromOffering",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -102,7 +191,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "createListing",
+		"name": "createOffering",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -151,6 +240,11 @@
 		"outputs": [
 			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "offeringId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "uint256",
 						"name": "cardNumber",
@@ -252,17 +346,18 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "mycardNumber",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "myprice",
+				"name": "myOfferingId",
 				"type": "uint256"
 			}
 		],
 		"name": "withdrawOffering",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
