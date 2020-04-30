@@ -1,64 +1,32 @@
 <template>
   <div class="page-wrapper">
-    <p>{{`pending_cards ${pending_cards} ${pending_cards.length}`}}</p>
-    <div v-for="card in pending_cards" :key="card.tx">
-      <p>{{`card.tx: ${card.tx} card.time_issued: ${card.time_issued}`}}</p>
-    </div>
-    <p>{{`unopened_cards ${unopened_cards} ${unopened_cards.length}`}}</p>
-    <div v-for="card in unopened_cards" :key="card.tx">
-      <p>{{`card.tx: ${card.tx} card.time_issued: ${card.time_issued} card.card_id: ${card.card_id}`}}</p>
-    </div>
-    <p>{{`opened_cards ${open_cards} ${open_cards.length}`}}</p>
     <div class="container">
-      <h3>open cards</h3>
-      <div class="card-grid" >
-        <div v-for="(card, index) in open_cards" :key="index" v-if="card >0 " >
-          <Card :id="index" :count="card"></Card>
+              <h3>Your hatching box</h3>
+
+      <div class="hatching-box">
+        <div class="card-grid">
+          <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0"></Box>
+          <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1"></Box>
+          <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2"></Box>
+          <Box v-for="(card) in revealing_cards" :key="card.tx" :box="card" :status="3"></Box>
+          <Box v-for="(card) in unopened_cards" :key="card.tx" :box="card" :status="4"></Box>
         </div>
       </div>
 
-      <h3>pending cards (not mined yet)</h3>
+      <h3>Hatched dinosaurs</h3>
       <div class="card-grid">
-        <div v-for="(card, index) in pending_cards" :key="index">
-          <Box :box="card"></Box>
-        </div>
+        <Card v-for="(card, index) in open_cards" :key="index" :id="card.content"></Card>
       </div>
 
-      <h3>bougth cards (not reveald)</h3>
-      <div class="card-grid">
-        <div v-for="(card, index) in bought_cards" :key="index">
-          <Box :box="card"></Box>
+      <!-- 
+        in loading states -> cursor: default + some kind of animation -> show that no interaction is required
 
-        </div>
-      </div>
+        show together:
+          1 pile: (pending, bought -> loading state, egg is intact), (ready -> click to reveal, onclick egg gets cracks), 
+            (revealing -> loading state, egg shakes with cracks), (unopened -> onclick openeing animation, move to open pile)
+          1 pile: open
 
-      <h3>ready cards (not reveald)</h3>
-      {{ready_cards}}
-      <div class="card-grid">
-        <div v-for="(card, index) in ready_cards" :key="index">
-          <Box :box="card"></Box>
-
-        </div>
-      </div>
-
-      <h3>revealing</h3>
-      {{revealing_cards}}
-      <div class="card-grid">
-        <div v-for="(card, index) in revealing_cards" :key="index">
-          <Box :box="card"></Box>
-
-        </div>
-      </div>
-
-      <h3>unopened</h3>
-      {{unopened_cards}}
-      <div class="card-grid">
-        <div v-for="(card, index) in unopened_cards" :key="index">
-          <Box :box="card"></Box>
-
-        </div>
-      </div>
-
+      -->
     </div>
   </div>
 </template>
@@ -69,7 +37,7 @@ import Box from "./Box";
 
 export default {
   name: "Inventory",
-  data () {
+  data() {
     return {};
   },
   props: {},
@@ -78,43 +46,53 @@ export default {
     Box
   },
   computed: {
-    pending_cards () {
-      return this.$store.state.cardDeck.pending;
+    pending_cards() {
+      var cards = this.$store.state.cardDeck.pending;
+      cards.push({ tx: 0 });
+      return cards;
     },
-    bought_cards () {
-      return this.$store.state.cardDeck.bought;
+    bought_cards() {
+      var cards = this.$store.state.cardDeck.bought;
+      cards.push({ tx: 0, revealblock: "asdf" });
+      return cards;
     },
-    ready_cards () {
-      return this.$store.state.cardDeck.ready;
+    ready_cards() {
+      var cards = this.$store.state.cardDeck.ready;
+      cards.push({ tx: 0, revealblock: "asdf" });
+      return cards;
     },
-    revealing_cards () {
-      return this.$store.state.cardDeck.revealing;
+    revealing_cards() {
+      var cards = this.$store.state.cardDeck.revealing;
+      cards.push({ tx: 0, revealblock: "asdf" });
+      return cards;
     },
-    unopened_cards () {
-      return this.$store.state.cardDeck.unopened;
+    unopened_cards() {
+      var cards = this.$store.state.cardDeck.unopened;
+      cards.push({ tx: 0, revealblock: "asdf", content: 1 });
+      return cards;
     },
-    open_cards () {
+    open_cards() {
       console.log(
         "this.$store.state.cardDeck.open",
         this.$store.state.cardDeck.open
       );
-      let open_card = Object.assign(
-        {},
-        this.$store.state.cardDeck.open
-      );
+      let open_card = Object.assign({}, this.$store.state.cardDeck.open);
       let unopen_card = this.$store.state.cardDeck.unopened;
       unopen_card.forEach(card_id => {
         open_card[card_id] = parseInt(open_card[card_id]) - 1;
       });
       console.log("open_card", open_card);
-      return open_card;
+      var test_card = [];
+      test_card.push({ tx: 0, revealblock: "asdf", content: 1 });
+      test_card.push({ tx: 0, revealblock: "qwer", content: 2 });
+      return test_card;
     }
   },
-  created () {
+  created() {
     console.log("dispatching getContractInstance");
     // this.$store.dispatch("getContractInstance");
   },
-  mounted () {
+  mounted() {
     this.$store.dispatch("getContractInstance");
 
     console.log("dispatching getCardsOpen");
@@ -130,5 +108,10 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
+}
+.hatching-box {
+  background-color: brown;
+  padding: 20px;
+  margin: 30px;
 }
 </style>

@@ -23,7 +23,7 @@ export default {
     return {};
   },
   props: {
-    id: String,
+    id: Number,
     count: String,
   },
   components: {},

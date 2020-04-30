@@ -1,10 +1,9 @@
 <template>
-  <div class="card-wrapper" >
-    <div class="card" @click="box.click" v-bind:class="getCardRarity(1)">
-
-    <p>ID/Tx: {{box.tx}}</p>
-    <p>Content: {{box}}</p>
-  </div>
+  <div class="card-wrapper">
+    <div class="egg" :class="animClass">
+      <img :src="imageUrl" alt />
+      <p>{{status}}</p>
+    </div>
   </div>
 </template>
 
@@ -18,63 +17,73 @@ export default {
   },
   props: {
     box: Object,
+    status: Number
   },
   components: {},
-  methods: {
-    getImageURl: function(id) {
-      return getCard(id).image;
+  methods: {},
+  created: function() {},
+  computed: {
+    imageUrl: function() {
+      console.log(`@/assets/egg-${this.status}.png`);
+      return require(`@/assets/egg-${this.status}.png`);
     },
-    getCardName: function(id) {
-        return getCard(id).name;
-    },
-    getCardText: function(id) {
-        return getCard(id).text;
-    },
-    getCardRarity: function(id) {
-        return getCard(id).rarity;
+    animClass: function() {
+      switch (this.status) {
+        case 0:
+          break;
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          return "ready";
+        case 4:
+          break;
+      }
     }
-  },
-  created: function() {}
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card-wrapper {
-  height: 400px;
-}
-.card {
-  height: 100%;
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid black;
-}
-.card-image-wrapper {
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid black;
-}
-.card-image-wrapper img {
-  max-width: 100%;
-  max-height: 100%;
-}
-.card-info-wrapper {
-    padding:10px;
-}
-.rarity-common {
+/* ---- animations ----- */
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+    transform: rotateZ(1deg);
+  }
 
-}
-.rarity-uncommon {
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+    transform: rotateZ(3deg);
+  }
 
-}
-.rarity-rare {
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+    transform: rotateZ(-3deg);
+  }
 
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+    transform: rotateZ(3deg);
+  }
 }
-.epic {
-    box-shadow: 0px 0px 8px purple;
+
+.egg.ready img {
+  animation: shake 1.5s infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
-.legendary {
-    box-shadow: 0px 0px 8px gold;
+
+.egg img {
+  height: 100px;
+  width: 100px;
 }
 </style>
