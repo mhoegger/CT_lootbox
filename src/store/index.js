@@ -289,10 +289,10 @@ export const store = new Vuex.Store({
             // subscribe to event
             store.state.contractInstance().events.generatedCard()
               .on("data", (result) => {
-                console.log("result.args", result.args);
+                console.log("result.args", result.returnValues.cardNumber);
                 store.dispatch("moveCardRevealingUnopened", {
                   tx: card_to_move.tx,
-                  content: result
+                  content: result.returnValues.cardNumber
                 });
               })
               .on("error", (err) => {
@@ -333,7 +333,7 @@ export const store = new Vuex.Store({
         }
         store.dispatch("getRevealBlockNumber").then(block_nr => {
           console.log("block_nr", block_nr)
-          if (!res && block_nr !== "0" && state.cardDeck.bought.length <= 0) {
+          if (!res && block_nr !== "0" && state.cardDeck.bought.length <= 0 && state.cardDeck.pending.length <= 0) {
             const id = Math.floor((1 + Math.random()) * 0x10000)
               .toString(16);
             console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id)
