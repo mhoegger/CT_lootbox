@@ -1,16 +1,17 @@
 <template>
   <div class="page-wrapper">
     <div class="container">
-              <h3>Your hatching box</h3>
 
-      <div class="hatching-box">
+      <h3>Own Offers</h3>
+      <div class="own-offers">
         <div class="card-grid">
-          <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0"></Box>
-          <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1"></Box>
-          <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2"></Box>
-          <Box v-for="(card) in revealing_cards" :key="card.tx" :box="card" :status="3"></Box>
-          <Box v-for="(card) in unopened_cards" :key="card.tx" :box="card" :status="4"></Box>
+          <Offer v-for="(card, index) in own_offers" :key="index" :card="card"></Offer>
         </div>
+      </div>
+
+      <h3>Other's Offers</h3>
+      <div class="card-grid">
+        <Offer v-for="(card, index) in others_offers" :key="index" :card="card"></Offer>
       </div>
 
       <h3>Hatched dinosaurs</h3>
@@ -28,43 +29,56 @@
 
       -->
     </div>
+    <SellCard :card_id="card_to_sell" v-if="show_sellcard_modal" />
+
   </div>
 </template>
 
 <script>
 import Card from "./Card";
 import Box from "./Box";
+import Offer from "./Offer";
+import SellCard from "./modals/SellCard.vue";
 
 export default {
-  name: "Inventory",
+  name: "MarketPlace",
   data () {
-    return {};
+    return {
+      show_sellcard_modal: false,
+      card_to_sell: null
+    };
   },
   props: {},
   components: {
     Card,
-    Box
+    Box,
+    SellCard,
+    Offer
   },
   computed: {
-    pending_cards () {
-      var cards = this.$store.state.cardDeck.pending;
-      return cards;
+    own_offers () {
+      let temp = this.$store.state.market.own_offers;
+      let own_offers = [];
+      temp.forEach(offer => {
+        let offer_as_obj = Object.assign({}, offer);
+        offer_as_obj.click = () => {
+          console.log("widthdraw");
+        };
+        own_offers.push(offer_as_obj);
+      });
+      return own_offers;
     },
-    bought_cards () {
-      var cards = this.$store.state.cardDeck.bought;
-      return cards;
-    },
-    ready_cards () {
-      var cards = this.$store.state.cardDeck.ready;
-      return cards;
-    },
-    revealing_cards () {
-      var cards = this.$store.state.cardDeck.revealing;
-      return cards;
-    },
-    unopened_cards () {
-      var cards = this.$store.state.cardDeck.unopened;
-      return cards;
+    others_offers () {
+      let temp = this.$store.state.market.others_offers;
+      let others_offers = [];
+      temp.forEach(offer => {
+        let offer_as_obj = Object.assign({}, offer);
+        offer_as_obj.click = () => {
+          console.log("buy");
+        };
+        others_offers.push(offer_as_obj);
+      });
+      return others_offers;
     },
     open_cards () {
       console.log(
@@ -78,15 +92,10 @@ export default {
           open_card.push({id: id,
             count: temp[id],
             click: () => {
-              console.log("DO Nothing");
+              this.$eventBus.$emit("openSellCard", id);
             }});
         }
       });
-      let unopen_card = this.$store.state.cardDeck.unopened;
-      unopen_card.forEach(card_id => {
-        open_card[card_id] = parseInt(open_card[card_id]) - 1;
-      });
-      console.log("open_card", open_card);
       var test_card = [];
       test_card.push({ tx: 0, revealblock: "asdf", content: 1 });
       test_card.push({ tx: 0, revealblock: "qwer", content: 2 });
@@ -94,14 +103,27 @@ export default {
     }
   },
   created () {
-    console.log("dispatching getContractInstance");
-    // this.$store.dispatch("getContractInstance");
   },
   mounted () {
     this.$store.dispatch("getContractInstance");
 
     console.log("dispatching getCardsOpen");
+    this.$store.dispatch("getListingsFromContract");
     this.$store.dispatch("getCardsOpen");
+
+    this.$eventBus.$on("openSellCard", (card_id) => {
+      this.card_to_sell = card_id;
+      console.log("openMetaMaskModal");
+      this.show_sellcard_modal = true;
+    });
+    this.$eventBus.$on("closeSellCard", () => {
+      this.show_sellcard_modal = false;
+    });
+  },
+  destroyed () {
+    // Generic Modal
+    this.$eventBus.$off("openSellCard");
+    this.$eventBus.$off("closeSellCard");
   },
   methods: {}
 };
@@ -114,7 +136,7 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
 }
-.hatching-box {
+.own-offers {
   background-color: brown;
   padding: 20px;
   margin: 30px;

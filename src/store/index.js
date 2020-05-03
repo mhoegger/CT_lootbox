@@ -40,7 +40,7 @@ export const store = new Vuex.Store({
     addCardInstance (state, payload) {
       let pile = payload.to;
       delete payload.to;
-      console.log("Add Card to ", pile ," pile: ", payload);
+      console.log("Add Card to ", pile, " pile: ", payload);
       state.cardDeck[pile].push(payload);
     },
 
@@ -73,6 +73,13 @@ export const store = new Vuex.Store({
 
     getRevealBlockNumberInstance (state, payload) {
       state.cardDeck.bought[state.cardDeck.bought.length - 1].revealblock = payload;
+    },
+
+    addOfferToOwnOffers (state, payload) {
+      state.market.own_offers.push(payload);
+    },
+    addOfferToOtherOffers (state, payload) {
+      state.market.others_offers.push(payload);
     }
 
   },
@@ -96,7 +103,6 @@ export const store = new Vuex.Store({
           resolve(false);
         });
       });
-
     },
 
     /**
@@ -216,7 +222,7 @@ export const store = new Vuex.Store({
         state.contractInstance().methods.getCards().call({
           from: state.web3.coinbase
         }).then(res => {
-          console.log("res", res)
+          console.log("res", res);
           commit("getCardsOpenInstance", res);
         }).catch(err => {
           console.log(err);
@@ -257,7 +263,7 @@ export const store = new Vuex.Store({
             if (err) {
               reject(console.log(err));
             } else {
-              console.log("getIsReady", res)
+              console.log("getIsReady", res);
               resolve(res);
             }
           });
@@ -267,7 +273,6 @@ export const store = new Vuex.Store({
           }, 500);
         }
       });
-
     },
 
     getRevealBox ({commit}) {
@@ -280,7 +285,7 @@ export const store = new Vuex.Store({
             transaction = tx;
             console.log("TX", tx);
             let card_to_move = state.cardDeck.ready[state.cardDeck.ready.length - 1];
-            console.log(card_to_move)
+            console.log(card_to_move);
             // Add to pending
             store.dispatch("moveCardReadyRevealing", {
               tx: card_to_move.tx,
@@ -307,10 +312,10 @@ export const store = new Vuex.Store({
         } else {
           console.log("NOT Ready");
         }
-      })
+      });
     },
 
-    checkBoxReveal({commit}, payload) {
+    checkBoxReveal ({commit}, payload) {
       let reveal_reached = state.cardDeck.bought.filter(card => card.revealblock < payload);
       console.log("Cards to Reveal:", reveal_reached);
       reveal_reached.forEach(card => {
@@ -320,11 +325,11 @@ export const store = new Vuex.Store({
         });
       });
       store.dispatch("getIsReady").then(res => {
-        console.log("checkBoxReveal", "getIsReady", res, reveal_reached.length <= 0, reveal_reached)
+        console.log("checkBoxReveal", "getIsReady", res, reveal_reached.length <= 0, reveal_reached);
         if (res && reveal_reached.length <= 0 && state.cardDeck.ready.length <= 0 && state.cardDeck.revealing.length <= 0) {
           const id = Math.floor((1 + Math.random()) * 0x10000)
             .toString(16);
-          console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id)
+          console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
           // card is ready but no in store
           store.dispatch("addCardReady", {
             tx: id,
@@ -332,11 +337,11 @@ export const store = new Vuex.Store({
           });
         }
         store.dispatch("getRevealBlockNumber").then(block_nr => {
-          console.log("block_nr", block_nr)
+          console.log("block_nr", block_nr);
           if (!res && block_nr !== "0" && state.cardDeck.bought.length <= 0 && state.cardDeck.pending.length <= 0) {
             const id = Math.floor((1 + Math.random()) * 0x10000)
               .toString(16);
-            console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id)
+            console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
             // card is ready but no in store
             store.dispatch("addCardBought", {
               tx: id,
@@ -345,7 +350,63 @@ export const store = new Vuex.Store({
           }
         });
       });
+    },
 
+    getListingsFromContract ({commit}) {
+      if (state.contractInstance && state.web3.coinbase) {
+        console.log("state.web3.coinbase", state.web3.coinbase);
+        state.contractInstance().methods.getListings().call({
+          from: state.web3.coinbase
+        }).then(res => {
+          console.log("getListings", res);
+          res.forEach(offer => {
+            if (offer.seller.toLowerCase() === state.web3.coinbase.toLowerCase()) {
+              console.log("addOfferToOwnOffers");
+              commit("addOfferToOwnOffers", offer);
+            } else {
+              console.log("addOfferToOwnOffers");
+              commit("addOfferToOtherOffers", offer);
+            }
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        setTimeout(() => {
+          store.dispatch("getListingsFromContract");
+        }, 500);
+      }
+    },
+
+    createOfferingFromContract ({commit}, payload) {
+      if (state.contractInstance && state.web3.coinbase) {
+        console.log("state.web3.coinbase", state.web3.coinbase);
+        console.log("payload.cardNumber", payload.cardNumber);
+        console.log("payload.cardNumber", typeof payload.cardNumber);
+        console.log("payload.cardNumber", typeof parseInt(payload.cardNumber - 1));
+        console.log("payload.price", payload.price);
+        console.log("payload.price", typeof state.web3.web3Instance().utils.toWei(payload.price, "ether"));
+
+        state.contractInstance().methods.createOffering(parseInt(payload.cardNumber), parseInt(state.web3.web3Instance().utils.toWei(payload.price, "ether"))).send({
+          from: state.web3.coinbase
+        }).then(res => {
+          console.log("createOfferingFromContract", res);
+          store.state.contractInstance().events.offeringCreated()
+            .on("data", (result) => {
+              console.log("offeringCreated", result.args);
+              console.log("offeringCreated", result);
+            })
+            .on("error", (err) => {
+              console.log("1112", err);
+            });
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        setTimeout(() => {
+          store.dispatch("createOfferingFromContract", payload);
+        }, 500);
+      }
     }
   }
 });

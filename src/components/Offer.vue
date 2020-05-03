@@ -1,14 +1,16 @@
 <template>
   <div class="card-wrapper" @click="card.click">
-    <div class="card" v-bind:class="getCardRarity((this.card.id % 4) + 1)">
+    <div class="card"">
       <div class="card-image-wrapper">
-        <img v-bind:src="getImageURl((this.card.id % 4) + 1)" alt />
+        <img v-bind:src="getImageURl((this.card.cardNumber % 4) + 1)" alt />
       </div>
       <div class='card-info-wrapper'>
-          <h4>name: {{getCardName((this.card.id % 4) + 1)}}</h4>
-          <p>text: {{getCardText((this.card.id % 4) + 1)}}</p>
-          <p>id: {{this.card.id}}</p>
-          <p>amount: {{this.card.count}}</p>
+          <h4>name: {{getCardName((this.card.cardNumber % 4) + 1)}}</h4>
+          <p>text: {{getCardText((this.card.cardNumber % 4) + 1)}}</p>
+          <p>CardNumber: {{this.card.cardNumber}}</p>
+          <p>seller: {{this.card.seller}}</p>
+          <p>price: {{this.card.price}}</p>
+          <p>OfferID: {{this.card.offeringId}}</p>
       </div>
     </div>
   </div>
@@ -40,7 +42,9 @@ export default {
         return getCard(id).rarity;
     }
   },
-  created: function() {}
+  created: function() {
+    console.log("OFFER", this.card)
+  }
 };
 </script>
 

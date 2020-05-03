@@ -16,6 +16,10 @@ let state = {
     revealing: [],
     unopened: [],
     open: []
+  },
+  market: {
+    own_offers: [],
+    others_offers: [],
   }
 };
 export default state;

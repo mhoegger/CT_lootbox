@@ -1,7 +1,7 @@
 // const address = "0x97bfC1b135455321c2BCB8046aa561A6b48F2983";
 // const address = "0xB641284235C477E478AD7D0Be8273d79c13f68b0";
 // const address = "0xf860d80313dd5a55bdc4568b89a472ffdb2de2a1";
-const address = "0x97BdB359295600C95bf58c5b34e0F7D4F78c72fB";
+const address = "0xD2129AC65cfC32453D5C321aCb80Fd48630eb910";
 const ABI = [
   {
     "inputs": [],
@@ -42,6 +42,105 @@ const ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "offeringId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cardNumber",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      }
+    ],
+    "name": "offeringBought",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "offeringId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cardNumber",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      }
+    ],
+    "name": "offeringCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "offeringId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cardNumber",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      }
+    ],
+    "name": "offeringWithdrawn",
+    "type": "event"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "buyBox",
@@ -66,21 +165,11 @@ const ABI = [
       },
       {
         "internalType": "uint256",
-        "name": "mycardNumber",
+        "name": "myOfferingId",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "myprice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "myseller",
-        "type": "address"
       }
     ],
-    "name": "buyCard",
+    "name": "buyCardFromOffering",
     "outputs": [
       {
         "internalType": "bool",
@@ -106,7 +195,7 @@ const ABI = [
         "type": "uint256"
       }
     ],
-    "name": "createListing",
+    "name": "createOffering",
     "outputs": [
       {
         "internalType": "bool",
@@ -155,6 +244,11 @@ const ABI = [
     "outputs": [
       {
         "components": [
+          {
+            "internalType": "uint256",
+            "name": "offeringId",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "cardNumber",
@@ -256,20 +350,21 @@ const ABI = [
       },
       {
         "internalType": "uint256",
-        "name": "mycardNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "myprice",
+        "name": "myOfferingId",
         "type": "uint256"
       }
     ],
     "name": "withdrawOffering",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   }
-];
+]
 export {address, ABI};

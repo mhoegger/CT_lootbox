@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "@/components/Home";
 import Buy from "@/components/Buy";
 import Inventory from "@/components/Inventory";
+import MarketPlace from "@/components/MarketPlace";
 
 Vue.use(Router);
 
@@ -22,6 +23,11 @@ export default new Router({
       path: "/inventory",
       name: "Inventory",
       component: Inventory
+    },
+    {
+      path: "/marketplace",
+      name: "MarketPlace",
+      component: MarketPlace
     }
   ]
 });

@@ -6,6 +6,9 @@
     <div class="home-right">
       <div class="home-button"><router-link to="/Inventory">view collection</router-link></div>
     </div>
+    <div class="home-right">
+      <div class="home-button"><router-link to="/MarketPlace">Trade Dinos</router-link></div>
+    </div>
   </div>
 </template>
 

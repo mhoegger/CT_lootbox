@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper">
+  <div class="card-wrapper" @click="this.box.click">
     <div class="egg" :class="animClass">
       <img :src="imageUrl" alt />
       <p>{{status}}</p>
