@@ -58,7 +58,7 @@ export default {
         console.log("TX", tx);
         transaction = tx;
         // Add to pending
-        this.$store.dispatch("addCardPending", {
+        this.$store.dispatch("addBoxPending", {
           tx: tx,
           time_issued: Date.now()
         });
@@ -67,7 +67,7 @@ export default {
           .on("data", (result) => {
             console.log("result.args", result.args);
             this.$store.dispatch("getRevealBlockNumber").then(res => {
-              this.$store.dispatch("moveCardPendingBought", {
+              this.$store.dispatch("moveBoxPendingBought", {
                 tx: tx,
                 revealblock: res
               });
@@ -82,7 +82,7 @@ export default {
       }).on("error", (error) => {
         console.log("error", error);
         // Add to pending
-        this.$store.dispatch("removeCardPending", {
+        this.$store.dispatch("removeBoxPending", {
           tx: transaction,
         });
       });

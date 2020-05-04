@@ -4,7 +4,8 @@ import state from "./state";
 import getWeb3 from "../util/getWeb3";
 import pollWeb3 from "../util/pollWeb3";
 import getContract from "../util/getContract";
-
+import * as box_pile_actions from "./box-piles/box-pile-actions";
+import * as box_pile_mutations from "./box-piles/box-pile-mutations";
 Vue.use(Vuex);
 export const store = new Vuex.Store({
   strict: true,
@@ -129,92 +130,23 @@ export const store = new Vuex.Store({
      * @param commit
      * @param payload
      */
-    addCardPending ({commit}, payload) {
-      payload.to = "pending";
-      commit("addCardInstance", payload);
-      payload.click = () => {
-        console.log("Do Nothing");
-      };
-    },
+    addBoxPending: box_pile_actions.addBoxPending,
 
-    removeCardPending ({commit}, payload) {
-      commit("removeCardPendingInstance", payload);
-    },
+    removeBoxPending: box_pile_actions.removeBoxPending,
 
-    // Move cards
-    moveCardPendingBought ({commit}, payload) {
-      payload.from = "pending";
-      payload.to = "bought";
-      payload.click = () => {
-        console.log("Do Nothing");
-      };
-      commit("moveCardInstance", payload);
-    },
+    moveBoxPendingBought: box_pile_actions.moveBoxPendingBought,
 
-    addCardBought ({commit}, payload) {
-      payload.to = "bought";
-      payload.click = () => {
-        console.log("Do Nothing");
-      };
-      commit("addCardInstance", payload);
-    },
+    addBoxBought: box_pile_actions.addBoxBought,
 
-    addCardReady ({commit}, payload) {
-      payload.to = "ready";
-      payload.click = () => {
-        console.log("clickEvent");
-        store.dispatch("getRevealBox");
-      };
-      commit("addCardInstance", payload);
-    },
+    addBoxReady: box_pile_actions.addBoxReady,
 
-    moveCardBoughtReady ({commit}, payload) {
-      payload.from = "bought";
-      payload.to = "ready";
-      payload.click = () => {
-        store.dispatch("getRevealBox");
-      };
-      commit("moveCardInstance", payload);
-    },
+    moveBoxBoughtReady: box_pile_actions.moveBoxBoughtReady,
 
-    moveCardReadyRevealing ({commit}, payload) {
-      payload.from = "ready";
-      payload.to = "revealing";
-      payload.click = () => {
-        console.log("Do Nothing");
-      };
-      commit("moveCardInstance", payload);
-    },
+    moveBoxReadyRevealing: box_pile_actions.moveBoxReadyRevealing,
 
-    moveCardRevealingReady ({commit}, payload) {
-      payload.from = "revealing";
-      payload.to = "ready";
-      payload.click = () => {
-        store.dispatch("getRevealBox");
-      };
-      commit("moveCardInstance", payload);
-    },
+    moveBoxRevealingReady: box_pile_actions.moveBoxRevealingReady,
 
-    moveCardRevealingUnopened ({commit}, payload) {
-      payload.from = "revealing";
-      payload.to = "unopened";
-      payload.click = () => {
-        console.log("Open Bom with content:", payload.content);
-        Vue.prototype.$eventBus.$emit("openOpenBox");
-        store.dispatch("moveCardUnopenedOpen", payload);
-        store.dispatch("getCardsOpen");
-      };
-      commit("moveCardInstance", payload);
-    },
-
-    moveCardUnopenedOpen ({commit}, payload) {
-      payload.from = "unopened";
-      payload.to = "open";
-      payload.click = () => {
-        console.log("Do Nothing");
-      };
-      commit("moveCardInstance", payload);
-    },
+    moveBoxRevealingUnopened: box_pile_actions.moveBoxRevealingUnopened,
 
     getCardsOpen ({commit}) {
       if (state.contractInstance && state.web3.coinbase) {
@@ -287,7 +219,7 @@ export const store = new Vuex.Store({
             let card_to_move = state.cardDeck.ready[state.cardDeck.ready.length - 1];
             console.log(card_to_move);
             // Add to pending
-            store.dispatch("moveCardReadyRevealing", {
+            store.dispatch("moveBoxReadyRevealing", {
               tx: card_to_move.tx,
               time_issued: Date.now()
             });
@@ -295,14 +227,14 @@ export const store = new Vuex.Store({
             store.state.contractInstance().events.generatedCard()
               .on("data", (result) => {
                 console.log("result.args", result.returnValues.cardNumber);
-                store.dispatch("moveCardRevealingUnopened", {
+                store.dispatch("moveBoxRevealingUnopened", {
                   tx: card_to_move.tx,
                   content: result.returnValues.cardNumber
                 });
               })
               .on("error", (err) => {
                 // Add to pending
-                store.dispatch("moveCardRevealingReady", {
+                store.dispatch("moveBoxRevealingReady", {
                   tx: transaction
                 });
               });
@@ -320,7 +252,7 @@ export const store = new Vuex.Store({
       console.log("Cards to Reveal:", reveal_reached);
       reveal_reached.forEach(card => {
         let card_to_move = state.cardDeck.bought[state.cardDeck.bought.length - 1];
-        store.dispatch("moveCardBoughtReady", {
+        store.dispatch("moveBoxBoughtReady", {
           tx: card_to_move.tx
         });
       });
@@ -331,7 +263,7 @@ export const store = new Vuex.Store({
             .toString(16);
           console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
           // card is ready but no in store
-          store.dispatch("addCardReady", {
+          store.dispatch("addBoxReady", {
             tx: id,
             revealblock: payload
           });
@@ -343,7 +275,7 @@ export const store = new Vuex.Store({
               .toString(16);
             console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
             // card is ready but no in store
-            store.dispatch("addCardBought", {
+            store.dispatch("addBoxBought", {
               tx: id,
               revealblock: block_nr
             });
