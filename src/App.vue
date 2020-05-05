@@ -94,6 +94,8 @@ export default {
     this.block_number_subscription.unsubscribe(function (error, success) {
       if (success) {
         console.log("Successfully unsubscribed!");
+      } else {
+        console.log("err", error);
       }
     });
   }

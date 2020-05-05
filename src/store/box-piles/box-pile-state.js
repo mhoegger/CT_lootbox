@@ -7,4 +7,4 @@ let box_pile = {
   open: []
 };
 
-export default {box_pile};
+export default box_pile;

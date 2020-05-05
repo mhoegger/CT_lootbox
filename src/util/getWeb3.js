@@ -6,7 +6,7 @@ function _checkMetamask () {
     let web3js = window.web3;
     if (typeof web3js !== "undefined") {
       let web3 = new Web3(web3js.currentProvider);
-      console.log("web3", web3)
+      console.log("web3", web3);
       resolve({
         is_connected: await web3.eth.net.isListening(),
         getWeb3Provider () {
@@ -23,10 +23,9 @@ function _checkMetamask () {
 function _getNetworkID (web3_object) {
   return new Promise(function (resolve, reject) {
     // Retrieve network ID
-    let networkId = web3_object.getWeb3Provider().givenProvider.networkVersion
+    let networkId = web3_object.getWeb3Provider().givenProvider.networkVersion;
     // Assign the networkId property to our result and resolve promise
     resolve(networkId);
-
   });
 }
 
@@ -39,7 +38,7 @@ function _getCoinbase (web3_object) {
         // If we can't find coindbase
         reject(new Error("Unable to retrieve coinbase"));
       } else {
-        console.log("coinbase", coinbase)
+        console.log("coinbase", coinbase);
         resolve(coinbase);
       }
     });

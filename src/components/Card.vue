@@ -19,7 +19,7 @@ import getCard from "./../util/constants/cards";
 
 export default {
   name: "Card",
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -27,20 +27,20 @@ export default {
   },
   components: {},
   methods: {
-    getImageURl: function(id) {
+    getImageURl (id) {
       return getCard(id).image;
     },
-    getCardName: function(id) {
-        return getCard(id).name;
+    getCardName (id) {
+      return getCard(id).name;
     },
-    getCardText: function(id) {
-        return getCard(id).text;
+    getCardText (id) {
+      return getCard(id).text;
     },
-    getCardRarity: function(id) {
-        return getCard(id).rarity;
+    getCardRarity (id) {
+      return getCard(id).rarity;
     }
   },
-  created: function() {}
+  created () {}
 };
 </script>
 

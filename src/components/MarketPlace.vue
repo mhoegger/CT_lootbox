@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     own_offers () {
-      let temp = this.$store.state.market.own_offers;
+      let temp = this.$store.state.market_place.own_offers;
       let own_offers = [];
       temp.forEach(offer => {
         let offer_as_obj = Object.assign({}, offer);
@@ -69,12 +69,12 @@ export default {
       return own_offers;
     },
     others_offers () {
-      let temp = this.$store.state.market.others_offers;
+      let temp = this.$store.state.market_place.others_offers;
       let others_offers = [];
       temp.forEach(offer => {
         let offer_as_obj = Object.assign({}, offer);
         offer_as_obj.click = () => {
-          console.log("buy");
+          this.$store.dispatch("buyOfferingFromContract", offer);
         };
         others_offers.push(offer_as_obj);
       });
@@ -83,10 +83,10 @@ export default {
     open_cards () {
       console.log(
         "this.$store.state.cardDeck.open",
-        this.$store.state.cardDeck.open
+        this.$store.state.card_pile
       );
       let open_card = [];
-      let temp = this.$store.state.cardDeck.open;
+      let temp = this.$store.state.card_pile;
       Object.keys(temp).forEach(id => {
         if (temp[id] > 0) {
           open_card.push({id: id,

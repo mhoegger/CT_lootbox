@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper" @click="this.box.click">
+  <div class="card-wrapper" @click="box.click">
     <div class="egg" :class="animClass">
       <img :src="imageUrl" alt />
       <p>{{status}}</p>
@@ -8,11 +8,10 @@
 </template>
 
 <script>
-import getCard from "./../util/constants/cards";
 
 export default {
   name: "Box",
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -21,13 +20,13 @@ export default {
   },
   components: {},
   methods: {},
-  created: function() {},
+  created () {},
   computed: {
-    imageUrl: function() {
+    imageUrl () {
       console.log(`@/assets/egg-${this.status}.png`);
       return require(`@/assets/egg-${this.status}.png`);
     },
-    animClass: function() {
+    animClass () {
       switch (this.status) {
         case 0:
           break;

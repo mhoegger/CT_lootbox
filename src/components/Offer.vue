@@ -1,6 +1,6 @@
 <template>
   <div class="card-wrapper" @click="card.click">
-    <div class="card"">
+    <div class="card">
       <div class="card-image-wrapper">
         <img v-bind:src="getImageURl((this.card.cardNumber % 4) + 1)" alt />
       </div>
@@ -21,7 +21,7 @@ import getCard from "./../util/constants/cards";
 
 export default {
   name: "Card",
-  data() {
+  data () {
     return {};
   },
   props: {
@@ -29,21 +29,21 @@ export default {
   },
   components: {},
   methods: {
-    getImageURl: function(id) {
+    getImageURl (id) {
       return getCard(id).image;
     },
-    getCardName: function(id) {
-        return getCard(id).name;
+    getCardName (id) {
+      return getCard(id).name;
     },
-    getCardText: function(id) {
-        return getCard(id).text;
+    getCardText (id) {
+      return getCard(id).text;
     },
-    getCardRarity: function(id) {
-        return getCard(id).rarity;
+    getCardRarity (id) {
+      return getCard(id).rarity;
     }
   },
-  created: function() {
-    console.log("OFFER", this.card)
+  created () {
+    console.log("OFFER", this.card);
   }
 };
 </script>

@@ -366,5 +366,5 @@ const ABI = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-]
+];
 export {address, ABI};

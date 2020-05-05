@@ -47,32 +47,32 @@ export default {
   },
   computed: {
     pending_cards () {
-      var cards = this.$store.state.cardDeck.pending;
+      var cards = this.$store.state.box_pile.pending;
       return cards;
     },
     bought_cards () {
-      var cards = this.$store.state.cardDeck.bought;
+      var cards = this.$store.state.box_pile.bought;
       return cards;
     },
     ready_cards () {
-      var cards = this.$store.state.cardDeck.ready;
+      var cards = this.$store.state.box_pile.ready;
       return cards;
     },
     revealing_cards () {
-      var cards = this.$store.state.cardDeck.revealing;
+      var cards = this.$store.state.box_pile.revealing;
       return cards;
     },
     unopened_cards () {
-      var cards = this.$store.state.cardDeck.unopened;
+      var cards = this.$store.state.box_pile.unopened;
       return cards;
     },
     open_cards () {
       console.log(
         "this.$store.state.cardDeck.open",
-        this.$store.state.cardDeck.open
+        this.$store.state.card_pile
       );
       let open_card = [];
-      let temp = this.$store.state.cardDeck.open;
+      let temp = this.$store.state.card_pile;
       Object.keys(temp).forEach(id => {
         if (temp[id] > 0) {
           open_card.push({id: id,
@@ -82,7 +82,7 @@ export default {
             }});
         }
       });
-      let unopen_card = this.$store.state.cardDeck.unopened;
+      let unopen_card = this.$store.state.box_pile.unopened;
       unopen_card.forEach(card_id => {
         open_card[card_id] = parseInt(open_card[card_id]) - 1;
       });

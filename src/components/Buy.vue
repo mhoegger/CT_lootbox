@@ -65,16 +65,14 @@ export default {
         // subscribe to event
         this.$store.state.contractInstance().events.boughtCard()
           .on("data", (result) => {
-            console.log("result.args", result.args);
+            console.log("result.args", result);
             this.$store.dispatch("getRevealBlockNumber").then(res => {
+              console.log("getRevealBlockNumber-....", res);
               this.$store.dispatch("moveBoxPendingBought", {
                 tx: tx,
                 revealblock: res
               });
-
             });
-
-
           })
           .on("error", (err) => {
             console.log("1112", err);
@@ -83,7 +81,7 @@ export default {
         console.log("error", error);
         // Add to pending
         this.$store.dispatch("removeBoxPending", {
-          tx: transaction,
+          tx: transaction
         });
       });
     }

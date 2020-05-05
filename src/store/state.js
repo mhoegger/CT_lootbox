@@ -1,3 +1,7 @@
+import box_pile from "./box-piles/box-pile-state";
+import card_pile from "./card-piles/card-pile-state";
+import market_place from "./market-place/market-place-state";
+
 let state = {
   web3: {
     isInjected: false,
@@ -9,17 +13,8 @@ let state = {
     is_connected: false
   },
   contractInstance: null,
-  cardDeck: {
-    pending: [],
-    bought: [],
-    ready: [],
-    revealing: [],
-    unopened: [],
-    open: []
-  },
-  market: {
-    own_offers: [],
-    others_offers: [],
-  }
+  box_pile: box_pile,
+  card_pile: card_pile,
+  market_place: market_place
 };
 export default state;

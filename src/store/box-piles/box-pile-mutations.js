@@ -1,5 +1,5 @@
 // aka addCardInstance
-import Vue from "vue/types/vue";
+import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
@@ -34,11 +34,11 @@ function removeBoxFromPile (state, payload) {
  */
 function moveBoxFromTo (state, payload) {
   console.log("Move card from ", payload.from, "to ", payload.to, ": ", payload.box.tx);
-  let boxes_to_move = state.cardDeck[payload.from].filter(obj => {
+  let boxes_to_move = state.box_pile[payload.from].filter(obj => {
     return obj.tx === payload.box.tx;
   });
   boxes_to_move.forEach(box => {
-    addBoxToPile(state, {to: payload.to, box: box});
+    addBoxToPile(state, {to: payload.to, box: payload.box});
     removeBoxFromPile(state, {from: payload.from, box: box});
   });
 }

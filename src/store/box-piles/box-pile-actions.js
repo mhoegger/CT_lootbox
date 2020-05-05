@@ -1,5 +1,5 @@
 // Add- Remove Pending
-import Vue from "vue/types/vue";
+import Vue from "vue";
 
 /**
  *
@@ -9,12 +9,12 @@ import Vue from "vue/types/vue";
 function addBoxPending ({commit}, box) {
   box.click = () => {
     console.log("Do Nothing");
-  }
+  };
 
   commit("addBoxToPile",
     {
       to: "pending",
-      box: box,
+      box: box
 
     }
   );
@@ -26,10 +26,9 @@ function removeBoxPending ({commit}, box) {
 
 // Move cards
 function moveBoxPendingBought ({commit}, box) {
-  box.click = () => {
-    console.log("Do Nothing");
-  };
-
+  Vue.set(box, "click", () => {
+    console.log("Do Nothing in Bought");
+  });
   commit("moveBoxFromTo", {
     from: "pending",
     to: "bought",
@@ -38,7 +37,6 @@ function moveBoxPendingBought ({commit}, box) {
 }
 
 function addBoxBought ({commit}, box) {
-
   box.click = () => {
     console.log("Do Nothing");
   };
@@ -49,11 +47,9 @@ function addBoxBought ({commit}, box) {
   });
 }
 
-function addBoxReady ({commit}, box) {
-
+function addBoxReady ({commit}, box, store) {
   box.click = () => {
-    console.log("clickEvent");
-    Vue.$store.dispatch("getRevealBox");
+    store.dispatch("getRevealBox");
   };
 
   commit("addBoxToPile", {
@@ -61,13 +57,10 @@ function addBoxReady ({commit}, box) {
     box: box
   });
 }
-
-function moveBoxBoughtReady ({commit}, box) {
-
-  box.click = () => {
-    console.log("clickEvent");
-    Vue.$store.dispatch("getRevealBox");
-  };
+function moveBoxBoughtReady ({commit}, box, store) {
+  Vue.set(box, "click", () => {
+    store.dispatch("getRevealBox");
+  });
 
   commit("moveBoxFromTo", {
     from: "bought",
@@ -77,9 +70,9 @@ function moveBoxBoughtReady ({commit}, box) {
 }
 
 function moveBoxReadyRevealing ({commit}, box) {
-  box.click = () => {
+  Vue.set(box, "click", () => {
     console.log("Do Nothing");
-  };
+  });
 
   commit("moveBoxFromTo", {
     from: "ready",
@@ -88,10 +81,10 @@ function moveBoxReadyRevealing ({commit}, box) {
   });
 }
 
-function moveBoxRevealingReady ({commit}, box) {
-  box.click = () => {
-    Vue.$store.dispatch("getRevealBox");
-  };
+function moveBoxRevealingReady ({commit}, box, store) {
+  Vue.set(box, "click", () => {
+    store.dispatch("getRevealBox");
+  });
 
   commit("moveBoxFromTo", {
     from: "ready",
@@ -100,13 +93,12 @@ function moveBoxRevealingReady ({commit}, box) {
   });
 }
 
-function moveBoxRevealingUnopened ({commit}, box) {
-  box.click = () => {
-    console.log("Open Bom with content:", box);
+function moveBoxRevealingUnopened ({commit}, box, store) {
+  Vue.set(box, "click", () => {
     Vue.prototype.$eventBus.$emit("openOpenBox");
-    // TODO: is needed? store.dispatch("moveCardUnopenedOpen", box);
-    Vue.$store.dispatch("getCardsOpen");
-  };
+    removeBoxUnopened(box);
+    store.dispatch("getCardsOpen");
+  });
 
   commit("moveBoxFromTo", {
     from: "revealing",
@@ -120,6 +112,117 @@ function removeBoxUnopened ({commit}, box) {
   commit("getCardsOpen");
 }
 
+function getRevealBlockNumber ({commit}, store) {
+  return new Promise((resolve, reject) => {
+    if (store.state.contractInstance) {
+      store.state.contractInstance().methods.getRevealBlockNumber().call({
+        from: store.state.web3.coinbase
+      }, function (err, res) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    } else {
+      resolve(setTimeout(() => {
+        store.dispatch("getRevealBlockNumber");
+      }, 500));
+    }
+  });
+}
+
+function getIsReady ({commit}, store) {
+  return new Promise((resolve, reject) => {
+    if (store.state.contractInstance) {
+      store.state.contractInstance().methods.isItReadyYet().call({
+        from: store.state.web3.coinbase
+      }, function (err, res) {
+        if (err) {
+          reject(console.log(err));
+        } else {
+          resolve(res);
+        }
+      });
+    } else {
+      setTimeout(() => {
+        resolve(store.dispatch("getIsReady"));
+      }, 500);
+    }
+  });
+}
+
+function getRevealBox ({commit}, store) {
+  store.dispatch("getIsReady").then(res => {
+    if (res) {
+      let transaction = null;
+      store.state.contractInstance().methods.revealBox().send({
+        from: store.state.web3.coinbase
+      }).on("transactionHash", (tx) => {
+        transaction = tx;
+        let card_to_move = store.state.box_pile.ready[store.state.box_pile.ready.length - 1];
+        // Add to pending
+        store.dispatch("moveBoxReadyRevealing", {
+          tx: card_to_move.tx,
+          time_issued: Date.now()
+        });
+        // subscribe to event
+        store.state.contractInstance().events.generatedCard()
+          .on("data", (result) => {
+            store.dispatch("moveBoxRevealingUnopened", {
+              tx: card_to_move.tx,
+              content: result.returnValues.cardNumber
+            });
+          })
+          .on("error", () => {
+            // Add to pending
+            store.dispatch("moveBoxRevealingReady", {
+              tx: transaction
+            });
+          });
+      }).on("error", (error) => {
+        console.log("error", error);
+      });
+    } else {
+      console.log("NOT Ready");
+    }
+  });
+}
+
+function checkBoxReveal ({commit}, payload, store) {
+  let reveal_reached = store.state.box_pile.bought.filter(card => card.revealblock < payload);
+  reveal_reached.forEach(card => {
+    let card_to_move = store.state.box_pile.bought[store.state.box_pile.bought.length - 1];
+    store.dispatch("moveBoxBoughtReady", {
+      tx: card_to_move.tx
+    });
+  });
+  store.dispatch("getIsReady").then(res => {
+    if (res && reveal_reached.length <= 0 && store.state.box_pile.ready.length <= 0 && store.state.box_pile.revealing.length <= 0) {
+      const id = Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16);
+      console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
+      // card is ready but no in store
+      store.dispatch("addBoxReady", {
+        tx: id,
+        revealblock: payload
+      });
+    }
+    store.dispatch("getRevealBlockNumber").then(block_nr => {
+      if (!res && block_nr !== "0" && store.state.box_pile.bought.length <= 0 && store.state.box_pile.pending.length <= 0) {
+        const id = Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16);
+        console.log("Box is ready, but not on Ready-pile, adding new card with id: ", id);
+        // card is ready but no in store
+        store.dispatch("addBoxBought", {
+          tx: id,
+          revealblock: block_nr
+        });
+      }
+    });
+  });
+}
+
 export {
   addBoxPending,
   removeBoxPending,
@@ -130,5 +233,9 @@ export {
   moveBoxReadyRevealing,
   moveBoxRevealingReady,
   moveBoxRevealingUnopened,
-  removeBoxUnopened
+  removeBoxUnopened,
+  getRevealBlockNumber,
+  getIsReady,
+  getRevealBox,
+  checkBoxReveal
 };
