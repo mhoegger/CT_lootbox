@@ -129,6 +129,5 @@ body {
 .container {
   max-width: 80%;
   margin: auto;
-  background-color:aliceblue
 }
 </style>
