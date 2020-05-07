@@ -1,15 +1,18 @@
 <template>
   <div class="page-wrapper">
-    <div class="container">
-              <h3>Your hatching box</h3>
 
       <div class="hatching-section">
+        <Rain>
+          </Rain>
       <div class="hatching-box">
+        <div class="nest">
           <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0"></Box>
           <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1"></Box>
           <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2"></Box>
           <Box v-for="(card) in revealing_cards" :key="card.tx" :box="card" :status="3"></Box>
           <Box v-for="(card) in unopened_cards" :key="card.tx" :box="card" :status="4"></Box>
+        </div>
+
       </div>
       <div class="message-box">
 
@@ -42,6 +45,11 @@
           Click to see what you hatched!
         </div>
       </div>
+        
+      </div>
+
+      <div class="scroll">
+        <span v-on:click='scrollDown' class='bounce'><img src="./../assets/chevron-down-solid.svg" alt=""></span>
       </div>
 
       <h3>Hatched dinosaurs</h3>
@@ -58,13 +66,12 @@
           1 pile: open
       -->
     </div>
-  </div>
 </template>
 
 <script>
 import Card from "./Card";
 import Box from "./Box";
-
+import Rain from "./Rain";
 export default {
   name: "Inventory",
   data () {
@@ -73,16 +80,21 @@ export default {
   props: {},
   components: {
     Card,
-    Box
+    Box,
+    Rain,
   },
   methods: {
     hatch (id) {
       console.log("hatching: " + id);
+    },
+    scrollDown () {
+      console.log("scroll");
     }
   },
   computed: {
     pending_cards () {
       var cards = this.$store.state.box_pile.pending;
+      cards.push({'tx':0});
       return cards;
     },
     bought_cards () {
@@ -116,12 +128,12 @@ export default {
           open_cards.push(new_card);
         }
       });
-      let unopen_card = this.$store.state.box_pile.unopened;
+      //let unopen_card = this.$store.state.box_pile.unopened;
       // TODO: remove unopened
       var test_card = [];
-      test_card.push({ tx: 0, revealblock: "asdf", content: 1, "click": () => {} });
-      test_card.push({ tx: 0, revealblock: "qwer", content: 2, "click": () => {} });
-      return open_cards;
+      test_card.push({ tx: 0, revealblock: "asdf", card_id: 1, "click": () => {} });
+      test_card.push({ tx: 5, revealblock: "qwer", card_id: 2, "click": () => {} });
+      return test_card;
     }
   },
   created () {
@@ -139,16 +151,44 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+ .bounce {
+        animation-name: bounce;
+        animation-timing-function: ease;
+            animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+    @keyframes bounce {
+        0%   { transform: translateY(0); }
+        30%  { transform: translateY(-20px); }
+        50%  { transform: translateY(0); }
+        100% { transform: translateY(0); }
+    }
+
+.scroll {
+  position: absolute;
+  bottom: 0;
+  height:10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100vw;
+}
+.scroll span {
+  color: black;
+  display: block;
+}
+.scroll img {
+  height:50px;
+  width:50px;
+}
 .hatching-section {
   display: flex;
   justify-content: center;
+  height:100vh;
+  background-image: url('./../assets/jungle_hatch.jpeg');
 }
 .page-wrapper {
-  background-image: url('./../assets/dinos.jpeg');
-  height:calc(100vh - 60px);
-  background-size: cover;
-  background-position: bottom;
-  padding:30px;
+
 }
 .card-grid {
   display: grid;
@@ -156,17 +196,22 @@ export default {
   grid-gap: 1rem;
 }
 .hatching-box {
-  padding: 20px;
-  margin: 30px;
-  margin-right:5px;
-  width:400px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  border: 4px solid grey;
-  border-radius: 8px;
+
+ position: relative;
+ height: 100%;
+ width: 100%;
+}
+.nest {
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  background: url('./../assets/nest.png');
+  background-size: cover;
+  bottom:280px;
+  right:220px;
 }
 .message {
+  background-color: white;
   width:200px;
    padding: 20px;
   margin: 30px;
@@ -174,4 +219,5 @@ export default {
     border: 4px solid grey;
   border-radius: 8px;
 }
+
 </style>
