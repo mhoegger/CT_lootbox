@@ -5,7 +5,7 @@
         <div class="water-container">
           <div class="overlay water">
                     <div class="shaker">
-                    <div class='box' v-on:bought="buyPack">
+                    <div class='box' @click="buyPack">
 
                     </div>
                     </div>
@@ -18,7 +18,7 @@
           <div class="wave wave4"></div>
         </div>
         </div>
-       
+
       </div>
   </div>
 </template>
@@ -106,7 +106,7 @@ position: absolute;
   cursor: pointer;
 }
 .box {
-  
+
   animation: animate-box 30s linear infinite;
   background: url("./../assets/pngwave.png");
   height:200px;

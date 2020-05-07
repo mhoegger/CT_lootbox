@@ -109,7 +109,6 @@ function moveBoxRevealingUnopened ({commit}, box, store) {
 
 function removeBoxUnopened ({commit}, box) {
   commit("removeBoxFromPile", {from: "unopened", box: box});
-  commit("getCardsOpen");
 }
 
 function getRevealBlockNumber ({commit}, store) {

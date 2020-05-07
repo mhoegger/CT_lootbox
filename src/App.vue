@@ -103,7 +103,9 @@ export default {
 </script>
 
 <style>
-:root {
+  @import url('https://fonts.googleapis.com/css?family=Frijole');
+
+  :root {
   --bg: #f5f7ff;
   --fg: #616b93;
 }
@@ -130,4 +132,12 @@ body {
   max-width: 80%;
   margin: auto;
 }
+
+  html, body {
+    font-family: 'Frijole';
+  }
+
+  #app {
+    font-family: 'Frijole';
+  }
 </style>

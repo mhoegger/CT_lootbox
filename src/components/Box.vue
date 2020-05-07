@@ -53,8 +53,7 @@ export default {
     },
     imageUrl () {
       // console.log(`@/assets/egg-${this.status}.png`);
-      // return require(`@/assets/egg-${this.status}.png`);
-      return require("@/assets/egg_0_grey.png");
+      return require(`@/assets/eggs/egg_${this.status}.png`);
     },
 
     animClass () {

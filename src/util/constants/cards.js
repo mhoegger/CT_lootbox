@@ -6,30 +6,42 @@ function getCard (id) {
     {
       "text": "this is some cool ass dino",
       "name": "bulbasaur",
-      "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.kEC9oBgUMnkdcHJNA4be-QHaG8%26pid%3DApi&f=1",
-      "rarity": "epic"
+      "image": require("@/assets/dinos/card_01.png"),
+      "rarity": require("@/assets/cards/card_design_common.png"),
+      "offer": require("@/assets/cards/offer_design_common.png")
 
     };
   cards["2"] =
     {
       "text": "even cooler dino",
       "name": "paul",
-      "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.O0gRMLwY-Dr_1IZa1xmwngAAAA%26pid%3DApi&f=1",
-      "rarity": "legendary"
+      "image": require("@/assets/dinos/card_02.png"),
+      "rarity": require("@/assets/cards/card_design_uncommon.png"),
+      "offer": require("@/assets/cards/offer_design_uncommon.png")
     };
   cards["3"] =
     {
       "text": "even derpier dino",
       "name": "longnek",
-      "image": require("@/assets/derpino_marius.png"),
-      "rarity": "epic"
+      "image": require("@/assets/dinos/card_03.png"),
+      "rarity": require("@/assets/cards/card_design_rare.png"),
+      "offer": require("@/assets/cards/offer_design_rare.png")
     };
   cards["4"] =
     {
       "text": "even derpierer dino",
       "name": "bluedude",
-      "image": require("@/assets/derpino2.png"),
-      "rarity": "epic"
+      "image": require("@/assets/dinos/card_04.png"),
+      "rarity": require("@/assets/cards/card_design_epic.png"),
+      "offer": require("@/assets/cards/offer_design_epic.png")
+    };
+  cards["5"] =
+    {
+      "text": "even derpierer dino 2",
+      "name": "bluedude",
+      "image": require("@/assets/dinos/card_05.png"),
+      "rarity": require("@/assets/cards/card_design_legendary.png"),
+      "offer": require("@/assets/cards/offer_design_legendary.png")
     };
   return cards[id];
 }
