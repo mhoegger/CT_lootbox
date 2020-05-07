@@ -3,9 +3,11 @@ pragma experimental ABIEncoderV2;
 
 contract LootAccount{
     address payable owner;
+    uint idCount;
 
     constructor() public {
         owner = msg.sender;
+        idCount = 0;
     }
 
     // Structure to store the cards hold by an address
@@ -17,6 +19,7 @@ contract LootAccount{
 
     // Structure to store a sell offer
     struct Offering{
+        uint offeringId;
         uint cardNumber;
         uint price ;
         address seller;
@@ -27,11 +30,13 @@ contract LootAccount{
 
     event generatedCard(uint cardNumber, address owner);
     event boughtCard(address owner);
+    event offeringCreated(uint offeringId, uint cardNumber, uint price ,address seller);
+    event offeringBought(uint offeringId, uint cardNumber, uint price ,address seller, address buyer);
+    event offeringWithdrawn(uint offeringId, uint cardNumber, uint price ,address seller);
 
-    // Storage of individual owned loot collection
-    mapping (address => Loot) lootAccounts ;
-
-    // Storage of individual revealBlockNumber
+    //mapping of Account to Loot owned
+    mapping (address => Loot) LootAccounts ;
+    //Storage of inducidual Revel Blocknumber
     mapping (address => uint) revealBlockNumber ;
 
     // Withdraw an amount from the balance of the contract.
@@ -126,15 +131,15 @@ contract LootAccount{
         Loot memory loot = lootAccounts[msg.sender];
         return loot.cards;
     }
-
-    // Create an offering to sell a card.
-    function createListing(uint cardNumber, uint myprice ) public returns (bool) {
-        require (lootAccounts[msg.sender].cards[cardNumber] > 0, "You have no Card to sell");
-        Offering memory myOffering = Offering(cardNumber, myprice, msg.sender);
+    
+    //create an offering to sell a card. Whenever it is created, the Card is transferd aout of the Loot of the Adress.
+    function createOffering(uint cardNumber, uint myprice ) public returns (bool) {
+        require (LootAccounts[msg.sender].cards[cardNumber] > 0, "You have no Card to sell");
+        Offering memory myOffering = Offering(idCount++,cardNumber, myprice, msg.sender);
         offerings.push(myOffering);
-        
-        // Remove card from account
-        lootAccounts[msg.sender].cards[cardNumber]--;
+        //transfer Card out off Account
+        LootAccounts[msg.sender].cards[cardNumber]--;
+        emit offeringCreated(myOffering.offeringId ,myOffering.cardNumber , myOffering.price ,myOffering.seller);
         return true;
     }
 
@@ -142,28 +147,28 @@ contract LootAccount{
     function getListings() external view returns(Offering[] memory ) {
         return offerings;
     }
-
-    // Buy a card that is offered.
-    // In order to be sure to match the right offering, the index in the offering list and all the data of the offering is needed to be passed as parameters.
-    function buyCard(uint index ,uint mycardNumber, uint myprice, address myseller) public payable returns (bool) {
-        // Check that the offering at the index is the correct one.
-        require(offerings[index].cardNumber == mycardNumber, "Order not availible anymore");
-        require(offerings[index].price == myprice, "Order not availible anymore");
-        require(offerings[index].seller == myseller, "Order not availible anymore");
-        require(index < offerings.length, "Order not availible anymore");
-        
-        // Check that the right amount of eth is set.
+    
+    // Buy a Card that is offerd
+    //in order to be sure to match the right Offering, the index in the Offeringlist and all the data of the Offering is needed to be pased
+    function buyCardFromOffering(uint index ,uint myOfferingId ) public payable returns (bool) {
+        //check the Offering at the index is the one we want
+        require(offerings[index].offeringId == myOfferingId,"Order not availible anymore");
+        require(index < offerings.length,"Order not availible anymore");
+        // check that we have sent the right ammount of money
         require(msg.value == offerings[index].price,"not enogh Funds provided");
         
         // Send the eth to the seller.
         (bool success, ) = offerings[index].seller.call.value(msg.value)("");
         require(success, "Transfer failed.");
-        
-        // Remove offering
+        uint mycardNumber = offerings[index].cardNumber;
+        uint myprice = offerings[index].price;
+        address myseller =  offerings[index].seller;
+        //remove offering
         removeOffering(index);
-        
-        // Add Card to buyers loot
-        lootAccounts[msg.sender].cards[mycardNumber]++;
+        //add Card to Buyers Loot
+        LootAccounts[msg.sender].cards[mycardNumber]++;
+        emit offeringBought(myOfferingId, mycardNumber, myprice, myseller, msg.sender);
+        return true;
     }
 
     // Removes an offering at a specific index in the list offerings.
@@ -176,18 +181,17 @@ contract LootAccount{
         offerings.length--;
     }
 
-    // Cancels an open offering
-    function withdrawOffering(uint index ,uint mycardNumber, uint myprice) public  {
-        
-        // Check that the offering at the index is the correct one.
-        require(offerings[index].cardNumber == mycardNumber,"Order not available anymore");
-        require(offerings[index].price == myprice,"Order not available anymore");
-        require(offerings[index].seller == msg.sender,"Order not available anymore");
-        
-        // Remove offering
+    function withdrawOffering(uint index , uint myOfferingId)  public returns (bool) {
+        //check the Offering at the index is the one we want
+        require(offerings[index].offeringId == myOfferingId,"Order not availible anymore");
+        //remove offering
+        uint mycardNumber = offerings[index].cardNumber;
+        uint myprice = offerings[index].price;
+        address myseller =  offerings[index].seller;
         removeOffering(index);
-
-        // Add card back to sellers loot
-        lootAccounts[msg.sender].cards[mycardNumber]++;
+        //add Card back to Sellers Loot
+        LootAccounts[msg.sender].cards[mycardNumber]++;
+        emit offeringWithdrawn( myOfferingId, mycardNumber, myprice , myseller);
+        return true;
     }
 }
