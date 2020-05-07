@@ -138,7 +138,7 @@ export default {
   grid-gap: 1rem;
 }
 .own-offers {
-  background-color: brown;
+  background-color: brown;s
   padding: 20px;
   margin: 30px;
 }
