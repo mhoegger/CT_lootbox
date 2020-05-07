@@ -52,7 +52,7 @@ export default {
   height: 343px;
   width: 250px;
   background-size: contain;
-  z-index: 98;
+  z-index: 0;
 
 }
 .card {
@@ -61,7 +61,8 @@ export default {
   left: -25px;
 }
 .card-image-wrapper {
-  height: 50%;
+  position: absolute;
+  height: 200px;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid black;
@@ -75,8 +76,11 @@ export default {
 
 }
 .card-info-wrapper {
+  top: 200px;
+  position: absolute;
     padding:10px;
   z-index: 120;
+  color: red;
 }
 .rarity-common {
 
