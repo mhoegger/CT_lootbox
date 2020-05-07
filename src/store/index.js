@@ -48,13 +48,16 @@ export const store = new Vuex.Store({
     moveBoxFromTo: box_pile_mutations.moveBoxFromTo,
 
     getCards: card_pile_mutations.getCards,
+    setCardOffering: card_pile_mutations.setCardOffering,
 
     getRevealBlockNumberInstance (state, payload) {
       state.cardDeck.bought[state.cardDeck.bought.length - 1].revealblock = payload;
     },
 
-    addOfferToOwnOffers: market_place_mutations.addOfferToOwnOffers,
-    addOfferToOtherOffers: market_place_mutations.addOfferToOtherOffers
+    updateOfferToOwnOffers: market_place_mutations.updateOfferToOwnOffers,
+    updateOfferToOtherOffers: market_place_mutations.updateOfferToOtherOffers,
+    setOfferWidthdrawing: market_place_mutations.setOfferWidthdrawing,
+    setOfferBuying: market_place_mutations.setOfferBuying
 
   },
 
@@ -154,11 +157,15 @@ export const store = new Vuex.Store({
     },
 
     createOfferingFromContract ({commit}, payload) {
-      return market_place_actions.createOfferingFromContract({commit},payload, store);
+      return market_place_actions.createOfferingFromContract({commit}, payload, store);
     },
 
     buyOfferingFromContract ({commit}, payload) {
-      return market_place_actions.buyOfferingFromContract({commit},payload, store);
+      return market_place_actions.buyOfferingFromContract({commit}, payload, store);
+    },
+
+    withdrawOfferingFromContract ({commit}, payload) {
+      return market_place_actions.withdrawOfferingFromContract({commit}, payload, store);
     }
   }
 });

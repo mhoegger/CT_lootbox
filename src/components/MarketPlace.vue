@@ -57,12 +57,13 @@ export default {
   },
   computed: {
     own_offers () {
+      console.log("Update_onwn")
       let temp = this.$store.state.market_place.own_offers;
       let own_offers = [];
       temp.forEach(offer => {
         let offer_as_obj = Object.assign({}, offer);
         offer_as_obj.click = () => {
-          console.log("widthdraw");
+          this.$store.dispatch("withdrawOfferingFromContract", offer);
         };
         own_offers.push(offer_as_obj);
       });
@@ -85,21 +86,21 @@ export default {
         "this.$store.state.cardDeck.open",
         this.$store.state.card_pile
       );
-      let open_card = [];
-      let temp = this.$store.state.card_pile;
-      Object.keys(temp).forEach(id => {
-        if (temp[id] > 0) {
-          open_card.push({id: id,
-            count: temp[id],
-            click: () => {
-              this.$eventBus.$emit("openSellCard", id);
-            }});
+      const open_cards = [];
+      this.$store.state.card_pile.forEach(card => {
+        if (card.amount > 0) {
+          let new_card = card;
+          new_card.click = () => {
+            this.$eventBus.$emit("openSellCard", new_card.card_id);
+          };
+          open_cards.push(new_card)
+
         }
       });
       var test_card = [];
       test_card.push({ tx: 0, revealblock: "asdf", content: 1 });
       test_card.push({ tx: 0, revealblock: "qwer", content: 2 });
-      return open_card;
+      return open_cards;
     }
   },
   created () {

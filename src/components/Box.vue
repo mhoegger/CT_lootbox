@@ -1,7 +1,10 @@
 <template>
   <div class="card-wrapper" @click="box.click">
     <div class="egg" :class="animClass">
-      <img :src="imageUrl" alt />
+      <div class="img-container" >
+        <img :style="colorEgg" class="masked" alt />
+        <img :src="imageUrl" alt />
+      </div>
       <p>{{status}}</p>
     </div>
   </div>
@@ -19,13 +22,41 @@ export default {
     status: Number
   },
   components: {},
-  methods: {},
+  methods: {
+    stringToColour (str) {
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      var colour = "#";
+      for (var i = 0; i < 3; i++) {
+        var value = (hash >> (i * 8)) & 0xFF;
+        colour += ("00" + value.toString(16)).substr(-2);
+      }
+      return colour;
+    }
+  },
   created () {},
+  watch: {
+    status (val) {
+      this.$forceUpdate();
+    }
+  },
   computed: {
-    imageUrl () {
-      console.log(`@/assets/egg-${this.status}.png`);
-      return require(`@/assets/egg-${this.status}.png`);
+    colorEgg () {
+      return {
+        backgroundColor: this.stringToColour(this.box.tx),
+        "-webkit-mask": `url(../../static/image/egg_${this.status}_mask.svg) no-repeat`,
+        "mask": `url(../../static/image/egg_${this.status}_mask.svg) no-repeat`
+
+      };
     },
+    imageUrl () {
+      // console.log(`@/assets/egg-${this.status}.png`);
+      // return require(`@/assets/egg-${this.status}.png`);
+      return require("@/assets/egg_0_grey.png");
+    },
+
     animClass () {
       switch (this.status) {
         case 0:
@@ -82,7 +113,24 @@ export default {
 }
 
 .egg img {
-  height: 100px;
-  width: 100px;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+
 }
+
+.img-container{
+  position: relative;
+}
+.masked{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0.5;
+  -webkit-mask: url(../../static/image/egg_0_mask.svg) no-repeat;
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+}
+
 </style>

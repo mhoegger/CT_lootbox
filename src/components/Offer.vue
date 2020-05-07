@@ -2,15 +2,16 @@
   <div class="card-wrapper" @click="card.click">
     <div class="card">
       <div class="card-image-wrapper">
-        <img v-bind:src="getImageURl((this.card.cardNumber % 4) + 1)" alt />
+        <img v-bind:src="getImageURl((card.cardNumber % 4) + 1)" alt />
       </div>
       <div class='card-info-wrapper'>
-          <h4>name: {{getCardName((this.card.cardNumber % 4) + 1)}}</h4>
-          <p>text: {{getCardText((this.card.cardNumber % 4) + 1)}}</p>
-          <p>CardNumber: {{this.card.cardNumber}}</p>
-          <p>seller: {{this.card.seller}}</p>
-          <p>price: {{this.card.price}}</p>
-          <p>OfferID: {{this.card.offeringId}}</p>
+          <h4>name: {{getCardName((card.cardNumber % 4) + 1)}}</h4>
+          <p>text: {{getCardText((card.cardNumber % 4) + 1)}}</p>
+          <p>CardNumber: {{card.cardNumber}}</p>
+          <p>seller: {{card.seller}}</p>
+          <p>price: {{card.price}}</p>
+          <p>OfferID: {{card.offeringId}}</p>
+          <p v-if="card.widthdrawing">Widthdrawing: {{card.widthdrawing}}</p>
       </div>
     </div>
   </div>

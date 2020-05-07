@@ -13,28 +13,33 @@
       </div>
       <div class="message-box">
 
-        <!-- TODO Frontend design: 
-          - add v-ifs to show only correct message 
+        <!-- TODO Frontend design:
+          - add v-ifs to show only correct message
           - design eggs nicely
           - design cards nicely
           - design animations
           -->
-        
+
         <!-- pending -->
-        <div class="message" id="wait" >Our architects are currently removing the dust from the prehistoric egg. You will get your precious prehistoric 
+        <div v-if="pending_cards.length>0" class="message" id="wait" >
+          Our archaeologists are currently removing the dust from the prehistoric egg. You will get your precious prehistoric
           friend any minute!
         </div>
         <!-- Bought -->
-                <div class="message" id="wait" >We found a very special egg, it is currently on its way to you!
+        <div v-if="bought_cards.length>0" class="message" id="wait" >
+          We found a very special egg, it is currently on its way to you!
         </div>
         <!-- Ready -->
-                <div class="message" id="wait" >Click on your new egg to start hatching it!
+        <div v-if="ready_cards.length>0" class="message" id="wait" >
+          Click on your new egg to start hatching it!
         </div>
         <!-- Revealing -->
-                <div class="message" id="wait" >It's already shaking, just a few moments!
+        <div v-if="revealing_cards.length>0" class="message" id="wait" >
+          It's already shaking, just a few moments!
         </div>
         <!-- Unopened -->
-                <div class="message" id="wait" >Click to see what you hatched!
+        <div v-if="unopened_cards.length>0" class="message" id="wait" >
+          Click to see what you hatched!
         </div>
       </div>
       </div>
@@ -78,8 +83,6 @@ export default {
   computed: {
     pending_cards () {
       var cards = this.$store.state.box_pile.pending;
-      cards.push({"tx": 123, "click": () => {}});
-
       return cards;
     },
     bought_cards () {
@@ -103,26 +106,22 @@ export default {
         "this.$store.state.cardDeck.open",
         this.$store.state.card_pile
       );
-      let open_card = [];
-      let temp = this.$store.state.card_pile;
-      Object.keys(temp).forEach(id => {
-        if (temp[id] > 0) {
-          open_card.push({id: id,
-            count: temp[id],
-            click: () => {
-              console.log("DO Nothing");
-            }});
+      const open_cards = [];
+      this.$store.state.card_pile.forEach(card => {
+        if (card.amount > 0) {
+          let new_card = card;
+          new_card.click = () => {
+            this.$eventBus.$emit("openSellCard", new_card.card_id);
+          };
+          open_cards.push(new_card);
         }
       });
       let unopen_card = this.$store.state.box_pile.unopened;
-      unopen_card.forEach(card_id => {
-        open_card[card_id] = parseInt(open_card[card_id]) - 1;
-      });
-      console.log("open_card", open_card);
+      // TODO: remove unopened
       var test_card = [];
       test_card.push({ tx: 0, revealblock: "asdf", content: 1, "click": () => {} });
-      test_card.push({ tx: 0, revealblock: "qwer", content: 2 , "click": () => {} });
-      return test_card;
+      test_card.push({ tx: 0, revealblock: "qwer", content: 2, "click": () => {} });
+      return open_cards;
     }
   },
   created () {

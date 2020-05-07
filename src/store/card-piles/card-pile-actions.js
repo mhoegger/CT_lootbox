@@ -7,7 +7,12 @@ function getCardsOpen ({commit}, store) {
       from: store.state.web3.coinbase
     }).then(res => {
       console.log("res", res);
-      commit("getCards", res);
+      const cards = [];
+      res.forEach((card_amount, index) => {
+        cards.push({card_id: index, amount: card_amount});
+      });
+
+      commit("getCards", cards);
     }).catch(err => {
       console.log(err);
     });
@@ -17,6 +22,8 @@ function getCardsOpen ({commit}, store) {
     }, 500);
   }
 }
+
+
 
 export {
   getCardsOpen

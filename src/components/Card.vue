@@ -1,14 +1,15 @@
 <template>
   <div class="card-wrapper" @click="card.click">
-    <div class="card" v-bind:class="getCardRarity((this.card.id % 4) + 1)">
+    <div class="card" v-bind:class="getCardRarity((card.card_id % 4) + 1)">
       <div class="card-image-wrapper">
-        <img v-bind:src="getImageURl((this.card.id % 4) + 1)" alt />
+        <img v-bind:src="getImageURl((card.card_id % 4) + 1)" alt />
       </div>
       <div class='card-info-wrapper'>
-          <h4>name: {{getCardName((this.card.id % 4) + 1)}}</h4>
-          <p>text: {{getCardText((this.card.id % 4) + 1)}}</p>
-          <p>id: {{this.card.id}}</p>
-          <p>amount: {{this.card.count}}</p>
+          <h4>name: {{getCardName((card.card_id % 4) + 1)}}</h4>
+          <p>text: {{getCardText((card.card_id % 4) + 1)}}</p>
+          <p>id: {{card.card_id}}</p>
+          <p>amount: {{card.amount}}</p>
+          <p v-if="card.offering">offering: {{card.offering}}</p>
       </div>
     </div>
   </div>

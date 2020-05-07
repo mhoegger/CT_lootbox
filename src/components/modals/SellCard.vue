@@ -24,7 +24,7 @@
 export default {
   name: "OpenBox",
   props: {
-    card_id: String
+    card_id: Number
   },
   data () {
     return {
@@ -35,7 +35,7 @@ export default {
     sendOffer () {
       console.log("P", this.price);
       this.$store.dispatch("createOfferingFromContract", {
-        cardNumber: this.card_id,
+        cardNumber: this.card_id.toString(),
         price: this.price
       });
     }
