@@ -52,10 +52,12 @@
         <span v-on:click='scrollDown' class='bounce'><img src="./../assets/chevron-down-solid.svg" alt=""></span>
       </div>
 
-      <h3>Hatched dinosaurs</h3>
+      <div class="container">
       <div class="card-grid">
         <Card v-for="(card, index) in open_cards" :key="index" :card="card"></Card>
       </div>
+      </div>
+
 
       <!--
         in loading states -> cursor: default + some kind of animation -> show that no interaction is required
@@ -151,6 +153,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container {
+  width: 80%;
+  margin: auto;
+}
+
  .bounce {
         animation-name: bounce;
         animation-timing-function: ease;
@@ -191,6 +198,7 @@ export default {
 
 }
 .card-grid {
+  margin-top: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 1rem;

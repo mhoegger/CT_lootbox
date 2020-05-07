@@ -1,18 +1,22 @@
 <template>
-  <div class="card-wrapper" @click="card.click" :style="{'background-image': 'url(' + require('@/assets/cards/template.png') + ')'}">
-    <div class="container">
-      <img class="card" v-bind:src="require('@/assets/cards/template_front.png')" alt />
-      <div class="card-image-wrapper">
+  <div class="card-wrapper" @click="card.click">
+    <div class="background">
+          <img class="card" v-bind:src="require('@/assets/cards/template_front.png')" alt />
+    </div>
+
+      <div class="dino-image">
           <img v-bind:src="getImageURl((card.card_id % 4) + 1)" alt />
       </div>
+      <div class="count">
+        <span>{{card.amount}}</span>
+      </div>
+      <div class="name">
+{{getCardName((card.card_id % 4) + 1)}}
+      </div>
       <div class='card-info-wrapper'>
-        <h4>name: {{getCardName((card.card_id % 4) + 1)}}</h4>
-        <p>text: {{getCardText((card.card_id % 4) + 1)}}</p>
-        <p>id: {{card.card_id}}</p>
-        <p>amount: {{card.amount}}</p>
+        <p>{{getCardText((card.card_id % 4) + 1)}}</p>
         <p v-if="card.offering">offering: {{card.offering}}</p>
       </div>
-    </div>
   </div>
 </template>
 
@@ -48,17 +52,65 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.background {
+  position: absolute;
+  top:0;
+  height:0;
+}
+.dino-image {
+  position: absolute;
+top: 35px;
+left: 0;
+width: 190px;
+height: 148px;
+overflow:hidden;
+}
+.dino-image img {
+  height: 100%;
+}
+
 .card-wrapper {
   height: 343px;
   width: 250px;
   background-size: contain;
   z-index: 0;
+  position: relative;
 
 }
 .card {
   position: absolute;
   z-index: 100;
   left: -25px;
+}
+.count {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:blue;
+  height: 39px;
+  width: 31px;
+  top: 31px;
+  z-index: 9999;
+  left: -3px;
+}
+.name {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:blue;
+ height: 39px;
+width: 151px;
+top: 171px;
+z-index: 9999;
+left: 22px;
+}
+.count span {
+  display: inline-block;
+  margin:0;
+  padding:0;
+  color: white;
 }
 .card-image-wrapper {
   position: absolute;
@@ -78,9 +130,17 @@ export default {
 .card-info-wrapper {
   top: 200px;
   position: absolute;
-    padding:10px;
+    padding:2px;
   z-index: 120;
-  color: red;
+  color: black;
+width: 159px;
+left: 18px;
+height: 71px;
+top: 239px;
+background-color: blue;
+}
+.card-info-wrapper p, .card-info-wrapper h4 {
+  margin:1px;
 }
 .rarity-common {
 
@@ -98,9 +158,5 @@ export default {
     box-shadow: 0px 0px 8px gold;
 }
 
-  .container{
-    position: relative;
-    top:0;
-    left: 0;
-  }
+
 </style>
