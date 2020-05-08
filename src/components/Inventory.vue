@@ -45,7 +45,7 @@
           Click to see what you hatched!
         </div>
       </div>
-        
+
       </div>
 
       <div class="scroll">
@@ -57,8 +57,6 @@
         <Card v-for="(card, index) in open_cards" :key="index" :card="card"></Card>
       </div>
       </div>
-
-
       <!--
         in loading states -> cursor: default + some kind of animation -> show that no interaction is required
 
@@ -111,7 +109,6 @@ export default {
   computed: {
     pending_cards () {
       var cards = this.$store.state.box_pile.pending;
-      cards.push({'tx':0});
       return cards;
     },
     bought_cards () {
@@ -145,12 +142,18 @@ export default {
           open_cards.push(new_card);
         }
       });
-      //let unopen_card = this.$store.state.box_pile.unopened;
-      // TODO: remove unopened
-      var test_card = [];
-      test_card.push({ tx: 0, revealblock: "asdf", card_id: 1, "click": () => {} });
-      test_card.push({ tx: 5, revealblock: "qwer", card_id: 2, "click": () => {} });
-      return test_card;
+      this.unopened_cards.forEach(card => {
+        console.log("*", open_cards, card);
+        let unopened = open_cards.find(c => c.card_id === parseInt(card.content));
+        console.log("unop", unopened);
+        if (unopened) {
+          unopened.amount = unopened.amount - 1;
+        }
+      });
+      // var test_card = [];
+      // test_card.push({ tx: 0, revealblock: "asdf", card_id: 1, "click": () => {} });
+      // test_card.push({ tx: 5, revealblock: "qwer", card_id: 2, "click": () => {} });
+      return open_cards;
     }
   },
   created () {
@@ -223,8 +226,8 @@ export default {
 .hatching-box {
 
  position: relative;
- height: 100%;
- width: 100%;
+  left:700px;
+  top:-70px;
 }
 .nest {
   position: absolute;

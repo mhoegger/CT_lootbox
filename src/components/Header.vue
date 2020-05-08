@@ -1,19 +1,13 @@
  <template>
   <div class="header">
     <router-link to="/">
-      <div class="header-wrapper">
-        <h3>Blockchain Lootboxes</h3>
-        <div class="header-right">
-          <div id="eth-account">
-            <img class="img-fluid" src="./../assets/ethereum-1.svg" alt />
-            <div id="eth-balance">
-              <p>{{balance}}</p>
-            </div>
-            <img class="avatar" :src="`https://robohash.org/${{address}}`" alt="Avatar">
-          </div>
-        </div>
-      </div>
+      <img class="home-button" v-bind:src='require("@/assets/home_button.png")' alt />
     </router-link>
+    <img class="user-button" v-bind:src='require("@/assets/user_button.png")' alt />
+    <div class="ether-button">
+      <img v-bind:src='require("@/assets/etherium.png")' alt />
+      <p>{{balance}}</p>
+    </div>
   </div>
 </template>
 
@@ -44,9 +38,6 @@ export default {
 
 <style scoped>
 .header {
-  background-color: #f5f7ff;
-  width: 100%;
-  max-width: 100%;
   top: 0;
   position: sticky;
 }
@@ -82,4 +73,47 @@ img.avatar {
   border-radius: 50%;
   background-color: #5E5E5E;
 }
+.home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  z-index: 9999;
+}
+
+.user-button {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  z-index: 9999;
+}
+
+.ether-button img {
+  height: 50px;
+  z-index: 9999;
+}
+.ether-button p {
+  position: absolute;
+  top: -10px;
+  right: 50px;
+  height: 50px;
+  z-index: 9999;
+  font-family: 'Frijole';
+  font-size: 22px;
+  font-stretch: ultra-expanded;
+  color: black;
+}
+
+.ether-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 50px;
+  z-index: 9999;
+}
+
+
 </style>

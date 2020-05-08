@@ -1,20 +1,20 @@
 <template>
   <div class="card-wrapper" @click="card.click">
     <div class="background">
-          <img class="card" v-bind:src="require('@/assets/cards/template_front.png')" alt />
+          <img class="card" v-bind:src="getCardRarity((card.card_id % 5) + 1)" alt />
     </div>
 
       <div class="dino-image">
-          <img v-bind:src="getImageURl((card.card_id % 4) + 1)" alt />
+          <img v-bind:src="getImageURl((card.card_id % 5) + 1)" alt />
       </div>
       <div class="count">
         <span>{{card.amount}}</span>
       </div>
       <div class="name">
-{{getCardName((card.card_id % 4) + 1)}}
+        {{getCardName((card.card_id % 5) + 1)}}
       </div>
       <div class='card-info-wrapper'>
-        <p>{{getCardText((card.card_id % 4) + 1)}}</p>
+        <p>{{getCardText((card.card_id % 5) + 1)}}</p>
         <p v-if="card.offering">offering: {{card.offering}}</p>
       </div>
   </div>
@@ -59,10 +59,10 @@ export default {
 }
 .dino-image {
   position: absolute;
-top: 35px;
-left: 0;
-width: 190px;
-height: 148px;
+top: 0;
+left: -25px;
+width: 100%;
+height: 100%;
 overflow:hidden;
 }
 .dino-image img {
@@ -87,7 +87,7 @@ overflow:hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color:blue;
+  /*background-color:blue;*/
   height: 39px;
   width: 31px;
   top: 31px;
@@ -99,18 +99,21 @@ overflow:hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color:blue;
+  /*background-color:blue;*/
  height: 39px;
 width: 151px;
 top: 171px;
 z-index: 9999;
 left: 22px;
+  color: black;
 }
 .count span {
   display: inline-block;
   margin:0;
   padding:0;
-  color: white;
+  color: #d2c4c1;
+  text-shadow: 2px 2px #473d3c;
+  font-size: 30px;
 }
 .card-image-wrapper {
   position: absolute;
@@ -137,10 +140,11 @@ width: 159px;
 left: 18px;
 height: 71px;
 top: 239px;
-background-color: blue;
+/*background-color: blue;*/
 }
 .card-info-wrapper p, .card-info-wrapper h4 {
   margin:1px;
+  font-size: 12px;
 }
 .rarity-common {
 
