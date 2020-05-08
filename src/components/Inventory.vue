@@ -1,11 +1,11 @@
 <template>
   <div class="page-wrapper">
 
-      <div class="hatching-section">
+      <div class="hatching-section" ref="hatchingSection">
         <Rain>
           </Rain>
       <div class="hatching-box">
-        <div class="nest">
+        <div class="nest" ref="nest">
           <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0"></Box>
           <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1"></Box>
           <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2"></Box>
@@ -77,13 +77,16 @@ import Rain from "./Rain";
 export default {
   name: "Inventory",
   data () {
-    return {};
+    return {
+      eggX: 0,
+      eggY: 0
+    };
   },
   props: {},
   components: {
     Card,
     Box,
-    Rain,
+    Rain
   },
   methods: {
     hatch (id) {
@@ -91,6 +94,18 @@ export default {
     },
     scrollDown () {
       console.log("scroll");
+    },
+    generateEggPosition () {
+      var width = this.$refs.hatchingSection.clientWidth;
+      var height = this.$refs.hatchingSection.clientHeight;
+      console.log(width);
+      console.log(height);
+      this.eggX = Math.random() * 100;
+      this.eggY = Math.random() * 100;
+    },
+    setEggPosition () {
+      this.$refs.nest.style.top = this.eggX + "%";
+      this.$refs.nest.style.left = this.eggY + "%";
     }
   },
   computed: {
@@ -143,6 +158,8 @@ export default {
     // this.$store.dispatch("getContractInstance");
   },
   mounted () {
+    this.generateEggPosition();
+    this.setEggPosition();
     this.$store.dispatch("getContractInstance");
 
     console.log("dispatching getCardsOpen");
@@ -215,8 +232,7 @@ export default {
   width: 80px;
   background: url('./../assets/nest.png');
   background-size: cover;
-  bottom:280px;
-  right:220px;
+
 }
 .message {
   background-color: white;

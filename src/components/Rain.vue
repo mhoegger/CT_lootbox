@@ -766,12 +766,8 @@ export default {
   },
   methods: {
   },
-  created () {
- 
-  },
-  mounted () {
-   
-  }
+  created () {},
+  mounted () {}
 };
 </script>
 
