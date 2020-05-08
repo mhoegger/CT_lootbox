@@ -37,7 +37,7 @@ function createOfferingFromContract ({commit}, payload, store) {
     console.log("state.web3.coinbase", store.state.web3.coinbase);
     console.log("payload.cardNumber", payload.cardNumber);
     console.log("payload.cardNumber", typeof payload.cardNumber);
-    console.log("payload.cardNumber", typeof parseInt(payload.cardNumber - 1));
+    console.log("payload.cardNumber", typeof parseInt(payload.cardNumber));
     console.log("payload.price", payload.price);
     console.log("payload.price", typeof store.state.web3.web3Instance().utils.toWei(payload.price, "ether"));
 

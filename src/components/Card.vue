@@ -1,20 +1,20 @@
 <template>
   <div class="card-wrapper" @click="card.click">
     <div class="background">
-          <img class="card" v-bind:src="getCardRarity((card.card_id % 5) + 1)" alt />
+          <img class="card" v-bind:src="getCardRarity(card.card_id)" alt />
     </div>
 
       <div class="dino-image">
-          <img v-bind:src="getImageURl((card.card_id % 5) + 1)" alt />
+          <img v-bind:src="getImageURl(card.card_id)" alt />
       </div>
       <div class="count">
         <span>{{card.amount}}</span>
       </div>
       <div class="name">
-        {{getCardName((card.card_id % 5) + 1)}}
+        {{getCardName(card.card_id)}}
       </div>
       <div class='card-info-wrapper'>
-        <p>{{getCardText((card.card_id % 5) + 1)}}</p>
+        <p>{{getCardText(card.card_id)}}</p>
         <p v-if="card.offering">offering: {{card.offering}}</p>
       </div>
   </div>
