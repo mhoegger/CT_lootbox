@@ -1,11 +1,18 @@
 <template>
-  <div class="card-wrapper" @click="box.click">
+  <div class="egg-wrapper" @click="box.click">
     <div class="egg" :class="animClass">
       <div class="img-container" >
         <img :style="colorEgg" class="masked" alt />
-        <img :src="imageUrl" alt />
+        <div class="rotator" v-if="openingAnimantion">
+       <img class='egg-img egg-top' v-bind:class="{flying: openingAnimantion}" src="./../assets/eggs/egg_top.png" alt 
+        />
+        </div>
+ 
+        <img class='egg-img egg-bottom' src="./../assets/eggs/egg_bottom.png" alt 
+        v-if="openingAnimantion"/>
+        <img class='egg-img' :src="imageUrl" alt 
+        v-if="!openingAnimantion"/>
       </div>
-      <p>{{status}}</p>
     </div>
   </div>
 </template>
@@ -19,7 +26,8 @@ export default {
   },
   props: {
     box: Object,
-    status: Number
+    status: Number,
+    openingAnimantion: Boolean
   },
   components: {},
   methods: {
@@ -76,6 +84,69 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.rotator {
+    transform-origin: 50% 50%;
+    animation: fly-out 2s linear 0s 1;
+
+}
+.egg-img.egg-top.flying {
+    animation: rotate 0.5s linear 0s infinite;
+
+  }
+.egg-img {
+  height:100%;
+  width:71%;
+}
+
+.egg-wrapper {
+  position: absolute;
+bottom: 29px;
+left: 42px;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  } to {
+    transform: rotate(360deg);
+  }
+
+}
+@keyframes fly-out {
+  0% {
+    transform: translate3d(0px,0px,0px);
+  }
+    10% {
+    transform: translate3d(50px,-70px,0px);
+  }
+    20% {
+    transform: translate3d(100px,-160px,0px);
+  }
+    30% {
+    transform: translate3d(150px,-230px,0px);
+  }
+    40% {
+    transform: translate3d(200px,-280px,0px);
+  }
+      50% {
+    transform: translate3d(250px,-300px,0px);
+  }
+      60% {
+    transform: translate3d(300px,-200px,0px);
+  }
+      70% {
+    transform: translate3d(350px,-150px,0px);
+  }
+      80% {
+    transform: translate3d(400px,-100px,0px);
+  }
+      90% {
+    transform: translate3d(450px,-50px,0px);
+  }
+  100% {
+    transform: translate3d(500px,0px,0px);
+  }
+}
+
 /* ---- animations ----- */
 @keyframes shake {
   10%,
@@ -113,7 +184,7 @@ export default {
 
 .egg img {
   height: 100%;
-  width: 100%;
+  width: 71%;
   z-index: 0;
 
 }

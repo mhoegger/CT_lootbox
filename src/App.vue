@@ -56,9 +56,9 @@ export default {
       this.show_metamask_modal = false;
     });
     this.$eventBus.$on("openOpenBox", (card) => {
-      console.log("openOpenBoxModal");
-      this.opening_card_id = card;
-      this.show_openbox_modal = true;
+      // console.log("openOpenBoxModal");
+      // this.opening_card_id = card;
+      // this.show_openbox_modal = true;
     });
     this.$eventBus.$on("closeOpenBox", () => {
       this.opening_card_id = null;

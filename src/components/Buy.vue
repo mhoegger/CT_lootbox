@@ -1,10 +1,13 @@
 <template>
   <div class="page-wrapper">
       <div class="shop">
-        <p style="position: absolute; left: 200px;">{{buying_blocked}}</p>
+        <div class="text"
+        v-if="buying_blocked">
+        buying blocked
+        </div>
         <div class="water-container">
           <div class="overlay water">
-                    <div class="shaker">
+                    <div v-if="!buying_blocked" class="shaker">
                     <div class='box' @click="buyPack">
 
                     </div>
@@ -105,6 +108,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.text {
+  position: absolute;
+  top:100px;
+  left:100px;
+}
+
 .shaker {
 animation: shake-box 2s linear infinite;
 position: absolute;

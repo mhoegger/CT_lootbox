@@ -6,11 +6,13 @@
           </Rain>
       <div class="hatching-box">
         <div class="nest" ref="nest">
-          <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0"></Box>
-          <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1"></Box>
-          <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2"></Box>
-          <Box v-for="(card) in revealing_cards" :key="card.tx" :box="card" :status="3"></Box>
-          <Box v-for="(card) in unopened_cards" :key="card.tx" :box="card" :status="4"></Box>
+          <div class="nest-wrapper">
+          <Box v-for="(card) in pending_cards" :key="card.tx" :box="card" :status="0" :openingAnimantion="openBox"></Box>
+          <Box v-for="(card) in bought_cards" :key="card.tx" :box="card" :status="1" :openingAnimantion="openBox"></Box>
+          <Box v-for="(card) in ready_cards" :key="card.tx" :box="card" :status="2" :openingAnimantion="openBox"></Box>
+          <Box v-for="(card) in revealing_cards" :key="card.tx" :box="card" :status="3" :openingAnimantion="openBox"></Box>
+          <Box v-for="(card) in unopened_cards" :key="card.tx" :box="card" :status="4" :openingAnimantion="openBox"></Box>
+          </div>
         </div>
 
       </div>
@@ -77,7 +79,8 @@ export default {
   data () {
     return {
       eggX: 0,
-      eggY: 0
+      eggY: 0,
+      openBox: false
     };
   },
   props: {},
@@ -109,6 +112,7 @@ export default {
   computed: {
     pending_cards () {
       var cards = this.$store.state.box_pile.pending;
+      
       return cards;
     },
     bought_cards () {
@@ -117,6 +121,13 @@ export default {
     },
     ready_cards () {
       var cards = this.$store.state.box_pile.ready;
+      cards.push({
+        'tx':1, 
+        'click': () => {
+          this.openBox = true;
+          this.$eventBus.$emit("openOpenBox", 1);
+          }
+      });
       return cards;
     },
     revealing_cards () {
@@ -167,6 +178,11 @@ export default {
 
     console.log("dispatching getCardsOpen");
     this.$store.dispatch("getCardsOpen");
+    this.$eventBus.$on("openOpenBox", (id) => {
+      console.log("opening card with id: "+ id);
+      // this.opening_card_id = card;
+      // this.show_openbox_modal = true;
+    });
   }
 };
 </script>
@@ -225,17 +241,25 @@ export default {
 }
 .hatching-box {
 
- position: relative;
   left:700px;
   top:-70px;
 }
 .nest {
   position: absolute;
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 133px;
   background: url('./../assets/nest.png');
   background-size: cover;
 
+}
+.nest-wrapper {
+  position: relative;
+  height: 100%;
+}
+Box {
+  position: absolute;
+  left:50%;
+  bottom:0;
 }
 .message {
   background-color: white;
