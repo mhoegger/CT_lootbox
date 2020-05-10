@@ -3,7 +3,7 @@
     <Header v-if="notHome && Web3Ready"></Header>
     <router-view />
     <MetaMaskModal v-if="show_metamask_modal" />
-    <OpenBox v-if="show_openbox_modal" />
+    <OpenBox v-if="show_openbox_modal" :card_id="opening_card_id"/>
     <!-- <Footer/> -->
   </div>
 </template>
@@ -42,7 +42,8 @@ export default {
     return {
       show_metamask_modal: false,
       show_openbox_modal: false,
-      block_number_subscription: null
+      block_number_subscription: null,
+      opening_card_id: null
     };
   },
   mounted () {
@@ -54,11 +55,13 @@ export default {
     this.$eventBus.$on("closeMetaMaskModal", () => {
       this.show_metamask_modal = false;
     });
-    this.$eventBus.$on("openOpenBox", () => {
+    this.$eventBus.$on("openOpenBox", (card) => {
       console.log("openOpenBoxModal");
+      this.opening_card_id = card;
       this.show_openbox_modal = true;
     });
     this.$eventBus.$on("closeOpenBox", () => {
+      this.opening_card_id = null;
       this.show_openbox_modal = false;
     });
     this.$store.dispatch("registerWeb3").then(res => {

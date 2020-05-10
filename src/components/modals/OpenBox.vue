@@ -11,6 +11,9 @@
         >
           OpenBoxModal
         </h3>
+        <p>
+          {{card_id}}
+        </p>
 
       </div>
       <div>
@@ -22,7 +25,10 @@
 
 <script>
 export default {
-  name: "OpenBox"
+  name: "OpenBox",
+  props: {
+    card_id: String
+  }
 };
 </script>
 

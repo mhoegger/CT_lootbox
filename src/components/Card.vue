@@ -4,19 +4,23 @@
           <img class="card" v-bind:src="getCardRarity(card.card_id)" alt />
     </div>
 
-      <div class="dino-image">
-          <img v-bind:src="getImageURl(card.card_id)" alt />
+    <div class="dino-image">
+        <img v-bind:src="getImageURl(card.card_id)" alt />
+    </div>
+    <div class="count">
+      <span>{{card.amount}}</span>
+    </div>
+    <div class="name">
+      {{getCardName(card.card_id)}}
+    </div>
+    <div class='card-info-wrapper'>
+      <p>{{getCardText(card.card_id)}}</p>
+      <p v-if="card.offering">offering: {{card.offering}}</p>
+      <div class="card-id">
+        {{card.card_id}}
       </div>
-      <div class="count">
-        <span>{{card.amount}}</span>
-      </div>
-      <div class="name">
-        {{getCardName(card.card_id)}}
-      </div>
-      <div class='card-info-wrapper'>
-        <p>{{getCardText(card.card_id)}}</p>
-        <p v-if="card.offering">offering: {{card.offering}}</p>
-      </div>
+    </div>
+
   </div>
 </template>
 
@@ -144,7 +148,13 @@ top: 239px;
 }
 .card-info-wrapper p, .card-info-wrapper h4 {
   margin:1px;
-  font-size: 12px;
+  font-size: 9.5px;
+}
+.card-id {
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+  font-size: 10px;
 }
 .rarity-common {
 

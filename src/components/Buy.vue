@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper">
       <div class="shop">
-
+        <p style="position: absolute; left: 200px;">{{buying_blocked}}</p>
         <div class="water-container">
           <div class="overlay water">
                     <div class="shaker">
@@ -46,6 +46,11 @@ export default {
     };
   },
   props: {},
+  computed: {
+    buying_blocked () {
+      return this.$store.state.box_blocked;
+    }
+  },
   components: {
   },
   mounted () {
@@ -90,7 +95,9 @@ export default {
         this.$store.dispatch("removeBoxPending", {
           tx: transaction
         });
+        this.$store.dispatch("changeBlockBoxesStateAction", false);
       });
+      this.$store.dispatch("changeBlockBoxesStateAction", true);
     }
   }
 };

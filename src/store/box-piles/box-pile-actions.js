@@ -95,7 +95,7 @@ function moveBoxRevealingReady ({commit}, box, store) {
 
 function moveBoxRevealingUnopened ({commit}, box, store) {
   Vue.set(box, "click", () => {
-    Vue.prototype.$eventBus.$emit("openOpenBox");
+    Vue.prototype.$eventBus.$emit("openOpenBox", box.content);
     removeBoxUnopened({commit}, box);
     store.dispatch("getCardsOpen");
   });
@@ -172,6 +172,7 @@ function getRevealBox ({commit}, store) {
               tx: card_to_move.tx,
               content: result.returnValues.cardNumber
             });
+            store.dispatch("changeBlockBoxesStateAction", false);
           })
           .on("error", () => {
             // Add to pending
@@ -195,6 +196,7 @@ function checkBoxReveal ({commit}, payload, store) {
     store.dispatch("moveBoxBoughtReady", {
       tx: card_to_move.tx
     });
+    store.dispatch("changeBlockBoxesStateAction", true);
   });
   store.dispatch("getIsReady").then(res => {
     if (res && reveal_reached.length <= 0 && store.state.box_pile.ready.length <= 0 && store.state.box_pile.revealing.length <= 0) {
@@ -206,6 +208,7 @@ function checkBoxReveal ({commit}, payload, store) {
         tx: id,
         revealblock: payload
       });
+      store.dispatch("changeBlockBoxesStateAction", true);
     }
     store.dispatch("getRevealBlockNumber").then(block_nr => {
       if (!res && block_nr !== "0" && store.state.box_pile.bought.length <= 0 && store.state.box_pile.pending.length <= 0) {
@@ -217,9 +220,14 @@ function checkBoxReveal ({commit}, payload, store) {
           tx: id,
           revealblock: block_nr
         });
+        store.dispatch("changeBlockBoxesStateAction", true);
       }
     });
   });
+}
+
+function changeBlockBoxesStateAction({commit}, payload) {
+  commit("changeBlockBoxesState", payload);
 }
 
 export {
@@ -236,5 +244,6 @@ export {
   getRevealBlockNumber,
   getIsReady,
   getRevealBox,
-  checkBoxReveal
+  checkBoxReveal,
+  changeBlockBoxesStateAction
 };

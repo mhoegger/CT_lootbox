@@ -15,6 +15,7 @@ let state = {
   contractInstance: null,
   box_pile: box_pile,
   card_pile: card_pile,
-  market_place: market_place
+  market_place: market_place,
+  box_blocked: false
 };
 export default state;

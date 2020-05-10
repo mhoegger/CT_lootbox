@@ -46,6 +46,7 @@ export const store = new Vuex.Store({
     addBoxToPile: box_pile_mutations.addBoxToPile,
     removeBoxFromPile: box_pile_mutations.removeBoxFromPile,
     moveBoxFromTo: box_pile_mutations.moveBoxFromTo,
+    changeBlockBoxesState: box_pile_mutations.changeBlockBoxesState,
 
     getCards: card_pile_mutations.getCards,
     setCardOffering: card_pile_mutations.setCardOffering,
@@ -151,6 +152,8 @@ export const store = new Vuex.Store({
     checkBoxReveal ({commit}, payload) {
       return box_pile_actions.checkBoxReveal({commit}, payload, store);
     },
+
+    changeBlockBoxesStateAction: box_pile_actions.changeBlockBoxesStateAction,
 
     getListingsFromContract ({commit}) {
       return market_place_actions.getListingsFromContract({commit}, store);

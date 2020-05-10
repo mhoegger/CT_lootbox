@@ -43,8 +43,13 @@ function moveBoxFromTo (state, payload) {
   });
 }
 
+function changeBlockBoxesState (state, payload) {
+  state.box_blocked = payload;
+}
+
 export {
   addBoxToPile,
   removeBoxFromPile,
-  moveBoxFromTo
+  moveBoxFromTo,
+  changeBlockBoxesState
 };
