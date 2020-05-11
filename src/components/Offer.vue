@@ -1,7 +1,11 @@
 <template>
   <div class="card-wrapper" @click="card.click">
     <div class="background">
-      <img class="card" v-bind:src="getCardRarity(card.cardNumber)" alt />
+      <img class="spinner" v-if="card.widthdrawing || card.buying" v-bind:src='require("@/assets/spinner.gif")' alt />
+      <p class="spinner_p" v-if="card.widthdrawing">Withdrawing</p>
+      <p class="spinner_p" style="left: 62px;" v-if="card.buying">Buying</p>
+      <img class="overlay" v-if="card.widthdrawing || card.buying" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.cardNumber)}_overlay.png`)' alt />
+      <img class="card" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.cardNumber)}.png`)' alt />
     </div>
 
     <div class="dino-image">
@@ -36,16 +40,16 @@ export default {
   components: {},
   methods: {
     getImageURl (id) {
-      return getCard(id).image;
+      return getCard((parseInt(id, 10) + 1).toString()).image;
     },
     getCardName (id) {
-      return getCard(id).name;
+      return getCard((parseInt(id, 10) + 1).toString()).name;
     },
     getCardText (id) {
-      return getCard(id).text;
+      return getCard((parseInt(id, 10) + 1).toString()).text;
     },
     getCardRarity (id) {
-      return getCard(id).offer;
+      return getCard((parseInt(id, 10) + 1).toString()).rarity;
     }
   },
   created () {
@@ -81,6 +85,27 @@ export default {
     z-index: 100;
     left: -25px;
   }
+  .overlay {
+    position: absolute;
+    z-index: 300;
+    left: -25px;
+    opacity: 90%;
+  }
+  .spinner {
+    position: absolute;
+    z-index: 301;
+    left: 68px;
+    top: 100px;
+    opacity: 40%;
+  }
+  .spinner_p {
+    color: white !important;
+    position: absolute;
+    z-index: 301;
+    left: 30px;
+    top: 160px;
+    opacity: 40%;
+  }
   .count {
     position: absolute;
     display: flex;
@@ -90,7 +115,7 @@ export default {
     height: 39px;
     width: 31px;
     top: 31px;
-    z-index: 9999;
+    z-index: 200;
     left: -3px;
   }
   .name {
@@ -102,7 +127,7 @@ export default {
     height: 39px;
     width: 151px;
     top: 171px;
-    z-index: 9999;
+    z-index: 200;
     left: 22px;
     color: black;
   }

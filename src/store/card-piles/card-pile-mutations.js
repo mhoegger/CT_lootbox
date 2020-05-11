@@ -8,7 +8,7 @@ function setCardOffering (state, payload) {
   console.log("--->", state.card_pile);
   console.log("--->", payload);
 
-  let card_to_mutate = state.card_pile.find(card => card.card_id.toString() === payload.cardNumber)
+  let card_to_mutate = state.card_pile.find(card => (card.card_id-1).toString() === payload.cardNumber)
   console.log("---", card_to_mutate);
   Vue.set(card_to_mutate, "offering", true);
 }

@@ -1,7 +1,10 @@
 <template>
   <div class="card-wrapper" @click="card.click">
     <div class="background">
-          <img class="card" v-bind:src="getCardRarity(card.card_id)" alt />
+      <img class="spinner" v-if="card.offering" v-bind:src='require("@/assets/spinner.gif")' alt />
+      <p class="spinner_p" style="left: 52px;" v-if="card.offering">Offering</p>
+      <img class="overlay" v-if="card.offering" v-bind:src='require(`@/assets/cards/card_design_${getCardRarity(card.card_id)}_overlay.png`)' alt />
+      <img class="card" v-bind:src='require(`@/assets/cards/card_design_${getCardRarity(card.card_id)}.png`)' alt />
     </div>
 
     <div class="dino-image">
@@ -88,6 +91,27 @@ overflow:hidden;
   z-index: 100;
   left: -25px;
 }
+.overlay {
+  position: absolute;
+  z-index: 300;
+  left: -25px;
+  opacity: 90%;
+}
+.spinner {
+  position: absolute;
+  z-index: 301;
+  left: 68px;
+  top: 100px;
+  opacity: 40%;
+}
+.spinner_p {
+  color: white !important;
+  position: absolute;
+  z-index: 301;
+  left: 32px;
+  top: 160px;
+  opacity: 40%;
+}
 .count {
   position: absolute;
   display: flex;
@@ -109,7 +133,7 @@ overflow:hidden;
  height: 39px;
 width: 151px;
 top: 171px;
-z-index: 9999;
+z-index: 200;
 left: 22px;
   color: black;
 }

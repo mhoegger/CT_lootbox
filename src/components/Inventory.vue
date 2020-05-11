@@ -208,6 +208,7 @@ export default {
       console.log("opening card with id: " + id);
       this.openBox = true;
       this.opening_card = { tx: 5, revealblock: "temp", card_id: id, "click": () => {
+          this.show_openbox_modal = false;
       } };
       this.show_openbox_modal = true;
     });

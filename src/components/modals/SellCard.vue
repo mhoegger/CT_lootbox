@@ -35,7 +35,7 @@ export default {
     sendOffer () {
       console.log("P", this.price);
       this.$store.dispatch("createOfferingFromContract", {
-        cardNumber: this.card_id.toString(),
+        cardNumber: (this.card_id - 1).toString(),
         price: this.price
       });
     }
