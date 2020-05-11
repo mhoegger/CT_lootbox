@@ -181,6 +181,7 @@ export default {
     this.$store.dispatch("getCardsOpen");
     this.$eventBus.$on("openOpenBox", (id) => {
       console.log("opening card with id: " + id);
+      this.openBox = true;
       // this.opening_card_id = card;
       // this.show_openbox_modal = true;
     });

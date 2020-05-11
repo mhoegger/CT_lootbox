@@ -172,6 +172,7 @@ function getRevealBox ({commit}, store) {
             store.dispatch("moveBoxRevealingUnopened", {
               tx: card_to_move.tx,
               content: parseInt(result.returnValues.cardNumber) + 1
+
             });
             store.dispatch("changeBlockBoxesStateAction", false);
           })
