@@ -181,7 +181,7 @@ function getCard (id) {
     };
   cards["23"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "These creatures are quite intrusive, but they minimize conflict and thus aren't very territorial.",
       "name": "Rhabcanthus",
       "image": require("@/assets/dinos/card_23.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -189,7 +189,7 @@ function getCard (id) {
     };
   cards["24"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They have a thick skin covered in large, coarse scales which is usually either light gold, dark bronze.",
       "name": "Nanopteryx",
       "image": require("@/assets/dinos/card_24.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -205,7 +205,7 @@ function getCard (id) {
     };
   cards["26"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This funny, but fairly common creature is a type of mammal. It's about the size of a goat.",
       "name": "Pogonosaurus",
       "image": require("@/assets/dinos/card_26.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -213,7 +213,7 @@ function getCard (id) {
     };
   cards["27"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They're nocturnal and rely on their sight and taste buds to get around.",
       "name": "Hesperonychus",
       "image": require("@/assets/dinos/card_27.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -221,7 +221,7 @@ function getCard (id) {
     };
   cards["28"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "It's about the size of a pelican, has two huge, powerful wings, two strong legs and a huge tail.",
       "name": "Massodromeus",
       "image": require("@/assets/dinos/card_28.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -229,7 +229,7 @@ function getCard (id) {
     };
   cards["29"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They live in barren areas and are fairly uncommon.",
       "name": "Agilivenator",
       "image": require("@/assets/dinos/card_29.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -237,7 +237,7 @@ function getCard (id) {
     };
   cards["30"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This clever, but very common creature is a type of reptile.",
       "name": "Leucorex",
       "image": require("@/assets/dinos/card_30.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -245,7 +245,7 @@ function getCard (id) {
     };
   cards["31"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "Their heads are relatively large in comparison to their bodies.",
       "name": "Daspletorex",
       "image": require("@/assets/dinos/card_31.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -253,7 +253,7 @@ function getCard (id) {
     };
   cards["32"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This uncommon creature is a type of bird. It's about the size of a penguin.",
       "name": "Silvipelix",
       "image": require("@/assets/dinos/card_32.png"),
       "rarity": require("@/assets/cards/card_design_uncommon.png"),
@@ -261,7 +261,7 @@ function getCard (id) {
     };
   cards["33"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They do have large, slanted eyes, but their sight is not very reliable.",
       "name": "Xanthopus",
       "image": require("@/assets/dinos/card_33.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -269,7 +269,7 @@ function getCard (id) {
     };
   cards["34"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "These creatures are very gentle and they have no real territory and wish to avoid conflicts.",
       "name": "Ovisornis",
       "image": require("@/assets/dinos/card_34.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -277,7 +277,7 @@ function getCard (id) {
     };
   cards["35"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They live in mountainous volcanic areas and are extremely rare.",
       "name": "Pachydon",
       "image": require("@/assets/dinos/card_35.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -285,7 +285,7 @@ function getCard (id) {
     };
   cards["36"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This special and rate creature is a type of reptile. It's about the size of a sea turtle.",
       "name": "Sinopelta",
       "image": require("@/assets/dinos/card_36.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -293,7 +293,7 @@ function getCard (id) {
     };
   cards["37"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They live in hot areas and are relatively rare.",
       "name": "Barosaura",
       "image": require("@/assets/dinos/card_37.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -301,7 +301,7 @@ function getCard (id) {
     };
   cards["38"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "They mate once every three to four months and they mate with just 1 partner for life.",
       "name": "Sarcosuchus",
       "image": require("@/assets/dinos/card_38.png"),
       "rarity": require("@/assets/cards/card_design_rare.png"),
@@ -309,7 +309,7 @@ function getCard (id) {
     };
   cards["39"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This fierce and nearly extinct creature can crush rocks with it's tail.",
       "name": "Mythceras",
       "image": require("@/assets/dinos/card_39.png"),
       "rarity": require("@/assets/cards/card_design_epic.png"),
@@ -317,7 +317,7 @@ function getCard (id) {
     };
   cards["40"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This charming and incredibily rare creature is a type of mammal.",
       "name": "Epicephalus",
       "image": require("@/assets/dinos/card_40.png"),
       "rarity": require("@/assets/cards/card_design_epic.png"),
@@ -325,7 +325,7 @@ function getCard (id) {
     };
   cards["41"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This unbelievably rare creature can run at full speed without tiring for over 25 minutes.",
       "name": "Herotitan",
       "image": require("@/assets/dinos/card_41.png"),
       "rarity": require("@/assets/cards/card_design_legendary.png"),
@@ -333,7 +333,7 @@ function getCard (id) {
     };
   cards["42"] =
     {
-      "text": "even derpierer dino 2",
+      "text": "This charming and legendary rare can regenerate severed limbs.",
       "name": "Legenderyx ",
       "image": require("@/assets/dinos/card_42.png"),
       "rarity": require("@/assets/cards/card_design_legendary.png"),

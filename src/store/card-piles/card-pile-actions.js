@@ -9,7 +9,7 @@ function getCardsOpen ({commit}, store) {
       console.log("res", res);
       const cards = [];
       res.forEach((card_amount, index) => {
-        cards.push({card_id: index, amount: card_amount});
+        cards.push({card_id: index + 1, amount: card_amount});
       });
 
       commit("getCards", cards);

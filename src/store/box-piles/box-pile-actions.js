@@ -95,6 +95,7 @@ function moveBoxRevealingReady ({commit}, box, store) {
 
 function moveBoxRevealingUnopened ({commit}, box, store) {
   Vue.set(box, "click", () => {
+    console.log(".....");
     Vue.prototype.$eventBus.$emit("openOpenBox", box.content);
     removeBoxUnopened({commit}, box);
     store.dispatch("getCardsOpen");
@@ -170,7 +171,7 @@ function getRevealBox ({commit}, store) {
           .on("data", (result) => {
             store.dispatch("moveBoxRevealingUnopened", {
               tx: card_to_move.tx,
-              content: result.returnValues.cardNumber
+              content: parseInt(result.returnValues.cardNumber) + 1
             });
             store.dispatch("changeBlockBoxesStateAction", false);
           })

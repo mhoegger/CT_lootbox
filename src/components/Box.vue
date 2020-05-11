@@ -4,13 +4,13 @@
       <div class="img-container" >
         <img :style="colorEgg" class="masked" alt />
         <div class="rotator" v-if="openingAnimantion">
-       <img class='egg-img egg-top' v-bind:class="{flying: openingAnimantion}" src="./../assets/eggs/egg_top.png" alt 
+       <img class='egg-img egg-top' v-bind:class="{flying: openingAnimantion}" src="./../assets/eggs/egg_top.png" alt
         />
         </div>
- 
-        <img class='egg-img egg-bottom' src="./../assets/eggs/egg_bottom.png" alt 
+
+        <img class='egg-img egg-bottom' src="./../assets/eggs/egg_bottom.png" alt
         v-if="openingAnimantion"/>
-        <img class='egg-img' :src="imageUrl" alt 
+        <img class='egg-img' :src="imageUrl" alt
         v-if="!openingAnimantion"/>
       </div>
     </div>
@@ -71,9 +71,9 @@ export default {
         case 1:
           break;
         case 2:
-          break;
-        case 3:
           return "ready";
+        case 3:
+          return "revealing";
         case 4:
           break;
       }
@@ -175,12 +175,34 @@ left: 42px;
   }
 }
 
-.egg.ready img {
+.bounce {
+  animation-name: bounce;
+  animation-timing-function: ease;
+}
+@keyframes bounce {
+  0%   { transform: scale(1,1)      translateY(0); }
+  10%  { transform: scale(1.1,.9)   translateY(0); }
+  30%  { transform: scale(.9,1.1)   translateY(-25px); }
+  50%  { transform: scale(1.05,.95) translateY(0); }
+  57%  { transform: scale(1,1)      translateY(-7px); }
+  64%  { transform: scale(1,1)      translateY(0); }
+  100% { transform: scale(1,1)      translateY(0); }
+}
+
+.egg.revealing img {
   animation: shake 1.5s infinite;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
+.egg.ready img {
+  animation: bounce 1.5s infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 
 .egg img {
   height: 100%;

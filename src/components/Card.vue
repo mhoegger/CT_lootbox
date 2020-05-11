@@ -50,7 +50,9 @@ export default {
       return getCard(id).rarity;
     }
   },
-  created () {}
+  created () {
+    console.log(this.card);
+  }
 };
 </script>
 

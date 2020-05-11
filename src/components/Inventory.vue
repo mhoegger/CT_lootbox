@@ -112,7 +112,7 @@ export default {
   computed: {
     pending_cards () {
       var cards = this.$store.state.box_pile.pending;
-      
+
       return cards;
     },
     bought_cards () {
@@ -121,13 +121,13 @@ export default {
     },
     ready_cards () {
       var cards = this.$store.state.box_pile.ready;
-      cards.push({
-        'tx':1, 
+      /*cards.push({
+        'tx':1,
         'click': () => {
           this.openBox = true;
           this.$eventBus.$emit("openOpenBox", 1);
           }
-      });
+      });*/
       return cards;
     },
     revealing_cards () {
@@ -146,13 +146,14 @@ export default {
       const open_cards = [];
       this.$store.state.card_pile.forEach(card => {
         if (card.amount > 0) {
-          let new_card = card;
+          let new_card = Object.assign({}, card);
           new_card.click = () => {
             this.$eventBus.$emit("openSellCard", new_card.card_id);
           };
           open_cards.push(new_card);
         }
       });
+      /*
       this.unopened_cards.forEach(card => {
         console.log("*", open_cards, card);
         let unopened = open_cards.find(c => c.card_id === parseInt(card.content));
@@ -160,7 +161,7 @@ export default {
         if (unopened) {
           unopened.amount = unopened.amount - 1;
         }
-      });
+      });*/
       // var test_card = [];
       // test_card.push({ tx: 0, revealblock: "asdf", card_id: 1, "click": () => {} });
       // test_card.push({ tx: 5, revealblock: "qwer", card_id: 2, "click": () => {} });
@@ -179,7 +180,7 @@ export default {
     console.log("dispatching getCardsOpen");
     this.$store.dispatch("getCardsOpen");
     this.$eventBus.$on("openOpenBox", (id) => {
-      console.log("opening card with id: "+ id);
+      console.log("opening card with id: " + id);
       // this.opening_card_id = card;
       // this.show_openbox_modal = true;
     });
@@ -206,6 +207,8 @@ export default {
         50%  { transform: translateY(0); }
         100% { transform: translateY(0); }
     }
+
+
 
 .scroll {
   position: absolute;
