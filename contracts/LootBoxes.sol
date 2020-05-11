@@ -100,7 +100,7 @@ contract LootAccount{
         uint card = getCard(seed);
 
         // Add the card to LootStorage.
-        lootAccounts[msg.sender].cards[card]++;
+        LootAccounts[msg.sender].cards[card]++;
 
         // Emit the card number and address of the newly owned card.
         emit generatedCard(card, msg.sender);
@@ -128,7 +128,7 @@ contract LootAccount{
 
     // Get all cards owned by the sender.
     function getCards() public view returns (uint[42] memory) {
-        Loot memory loot = lootAccounts[msg.sender];
+        Loot memory loot = LootAccounts[msg.sender];
         return loot.cards;
     }
     
