@@ -3,15 +3,15 @@
     <div class="egg" :class="animClass">
       <div class="img-container" >
         <img :style="colorEgg" class="masked" alt />
-        <div class="rotator" v-if="openingAnimantion">
-       <img class='egg-img egg-top' v-bind:class="{flying: openingAnimantion}" src="./../assets/eggs/egg_top.png" alt
+        <div class='egg-top-cont' v-if="status==4" v-bind:class="{rotator: openingAnimantion}">
+       <img class='egg-img egg-top' v-if="status==4" v-bind:class="{flying: openingAnimantion}" src="./../assets/eggs/egg_4_top.png" alt
         />
         </div>
 
-        <img class='egg-img egg-bottom' src="./../assets/eggs/egg_bottom.png" alt
-        v-if="openingAnimantion"/>
+        <!-- <img class='egg-img egg-bottom' src="./../assets/eggs/egg_bottom.png" alt
+        v-if="openingAnimantion"/> -->
         <img class='egg-img' :src="imageUrl" alt
-        v-if="!openingAnimantion"/>
+        />
       </div>
     </div>
   </div>
@@ -84,14 +84,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.egg-top-cont {
+  position: absolute;
+width: 71%;
+left: 8px;
+}
 .rotator {
     transform-origin: 50% 50%;
     animation: fly-out 2s linear 0s 1;
+    animation-fill-mode: forwards;  
 
 }
 .egg-img.egg-top.flying {
     animation: rotate 0.5s linear 0s infinite;
-
   }
 .egg-img {
   height:100%;
@@ -114,6 +119,7 @@ left: 42px;
 @keyframes fly-out {
   0% {
     transform: translate3d(0px,0px,0px);
+    opacity: 1;
   }
     10% {
     transform: translate3d(50px,-70px,0px);
@@ -138,12 +144,14 @@ left: 42px;
   }
       80% {
     transform: translate3d(400px,-100px,0px);
+    opacity: 1;
   }
       90% {
     transform: translate3d(450px,-50px,0px);
   }
   100% {
     transform: translate3d(500px,0px,0px);
+    opacity: 0;
   }
 }
 
