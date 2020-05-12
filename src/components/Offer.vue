@@ -40,12 +40,9 @@
 
     <div class='card-info-wrapper'>
       <p>text: {{getCardText(card.cardNumber)}}</p>
-      <p>CardNumber: {{card.cardNumber}}</p>
-      <p>seller: {{card.seller}}</p>
-      <p class="hovver">price: {{card.price}}</p>
-      <p>OfferID: {{card.offeringId}}</p>
-      <p v-if="card.widthdrawing">Widthdrawing: {{card.widthdrawing}}</p>
-
+      <div class="card-id">
+        {{(parseInt(card.cardNumber) + 1)}}
+      </div>
     </div>
   </div>
 </template>
@@ -110,6 +107,12 @@ export default {
     position: absolute;
     z-index: 100;
     left: -25px;
+  }
+  .card-id {
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    font-size: 10px;
   }
 
   .hovver {

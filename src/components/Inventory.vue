@@ -272,8 +272,9 @@ export default {
     this.generateEggPosition();
     this.setEggPosition();
     this.$eventBus.$on("openOpenBox", id => {
-      console.log("opening card with id: " + id);
       this.opening_card_rarity = this.getCardRarity(id);
+      console.log("opening card with id: " + id, this.opening_card_rarity);
+
       this.openBox = true;
       this.show_openbox_modal = true;
       this.playSoundFile(this.opening_card_rarity);
