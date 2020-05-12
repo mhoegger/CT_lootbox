@@ -366,13 +366,13 @@ export default {
 
 @keyframes glow-common {
   0% {
-    box-shadow: 0 0 1px 1px #606060;
+    box-shadow: 0 0 1px 1px #b4b4b4;
   }
   50% {
-    box-shadow: 0 0 15px 15px #606060;
+    box-shadow: 0 0 15px 15px #b4b4b4;
   }
   100% {
-    box-shadow: 0 0 1px 1px #606060;
+    box-shadow: 0 0 1px 1px #b4b4b4;
   }
 }
 @keyframes glow-uncommon {
@@ -408,7 +408,7 @@ export default {
     box-shadow: 0 0 1px 1px #bd5137;
   }
 }
-@keyframes glow-common {
+@keyframes glow-legendary {
   0% {
     box-shadow: 0 0 1px 1px #f98a0b;
   }

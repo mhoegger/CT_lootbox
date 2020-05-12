@@ -37,9 +37,7 @@ export const store = new Vuex.Store({
     },
 
     registerContractInstance (state, payload) {
-      console.log("Casino contract instance: ", payload);
       state.contractInstance = payload;
-      console.log("Casino done: ");
     },
 
     // Box
