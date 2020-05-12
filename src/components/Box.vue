@@ -27,7 +27,9 @@ export default {
   props: {
     box: Object,
     status: Number,
-    openingAnimantion: Boolean
+    openingAnimantion: Boolean,
+    eggX: Number,
+    eggY: Number,
   },
   components: {},
   methods: {

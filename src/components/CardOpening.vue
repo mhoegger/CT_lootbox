@@ -91,6 +91,8 @@ overflow:hidden;
   background-size: contain;
   z-index: 0;
   position: relative;
+  top: -39px;
+  left:5px;
 
 }
 .card {

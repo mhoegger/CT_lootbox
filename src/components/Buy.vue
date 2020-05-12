@@ -1,9 +1,12 @@
 <template>
   <div class="page-wrapper">
       <div class="shop">
-        <div class="text"
+              <div class="message-box"
         v-if="buying_blocked">
-        buying blocked
+        <div class="message">
+        You just bought a Box, wait until the egg has hatched until you can buy a new one
+
+        </div>
         </div>
         <div class="water-container">
           <div class="overlay water">
@@ -108,6 +111,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.message {
+  background-color: white;
+  width: 200px;
+  padding: 20px;
+  margin: 30px;
+  margin-left: 5px;
+  border: 4px solid grey;
+  border-radius: 8px;
+}
+
 .text {
   position: absolute;
   top:100px;
