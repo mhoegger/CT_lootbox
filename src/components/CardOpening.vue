@@ -1,7 +1,7 @@
 <template>
   <div class="card-wrapper" @click="card.click">
     <div class="background">
-          <img class="card" v-bind:src="getCardRarity(card.card_id)" alt />
+      <img class="card" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.card_id)}.png`)' alt />
     </div>
 
     <div class="dino-image">

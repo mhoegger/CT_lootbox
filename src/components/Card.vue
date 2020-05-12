@@ -14,8 +14,20 @@
       <span>{{card.amount}}</span>
     </div>
     <div class="name">
-      {{getCardName(card.card_id)}}
+    <svg class="svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         width="200px" height="200px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
+
+    <path class="text1" fill="none" stroke="red" id="red" stroke-opacity="0.0" d="M 10 80 Q 95 55 180 80"/>
+        <text text-anchor="middle" font-size="15px" class="text1">
+            <textPath xlink:href="#red" startOffset="50%">
+                {{getCardName(card.card_id)}}
+            </textPath>
+      </text>
+
+
+  </svg>
     </div>
+
     <div class='card-info-wrapper'>
       <p>{{getCardText(card.card_id)}}</p>
       <p v-if="card.offering">offering: {{card.offering}}</p>
@@ -52,9 +64,15 @@ export default {
     getCardRarity (id) {
       return getCard(id).rarity;
     }
+
+
   },
   created () {
     console.log(this.card);
+
+
+
+    circularText("this text is in a circle ", 100, 0);
   }
 };
 </script>
@@ -198,5 +216,14 @@ top: 239px;
     box-shadow: 0px 0px 8px gold;
 }
 
+  .text1 {
+    position: absolute;
+    left: -100px;
+  }
+.svg {
+    position: absolute;
+    left: -22px;
+  top: -48px
+  }
 
 </style>

@@ -79,7 +79,7 @@
       </div>
 
       <div class="opening_animation" v-if="show_openbox_modal">
-        <Card :card="opening_card"></Card>
+        <CardOpening :card="opening_card"></CardOpening>
       </div>
     </div>
 
@@ -107,6 +107,7 @@
 
 <script>
 import Card from "./Card";
+import CardOpening from "./CardOpening";
 import Box from "./Box";
 import Rain from "./Rain";
 export default {
@@ -124,7 +125,8 @@ export default {
   components: {
     Card,
     Box,
-    Rain
+    Rain,
+    CardOpening
   },
   methods: {
     hatch(id) {

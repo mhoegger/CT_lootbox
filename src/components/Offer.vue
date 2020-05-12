@@ -12,9 +12,20 @@
       <img v-bind:src="getImageURl(card.cardNumber)" alt />
     </div>
 
-    <div class="name">
+    <svg class="svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         width="200px" height="200px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
+
+    <path class="text1" fill="none" stroke="red" id="red" stroke-opacity="0.0" d="M 10 80 Q 95 55 180 80"/>
+      <text text-anchor="middle" font-size="15px" class="text1">
+            <textPath xlink:href="#red" startOffset="50%">
       {{getCardName(card.cardNumber)}}
-    </div>
+            </textPath>
+      </text>
+
+
+  </svg>
+
+
     <div class='card-info-wrapper'>
       <p>text: {{getCardText(card.cardNumber)}}</p>
       <p>CardNumber: {{card.cardNumber}}</p>
@@ -169,5 +180,16 @@ export default {
   .card-info-wrapper p, .card-info-wrapper h4 {
     margin:1px;
     font-size: 12px;
+  }
+
+  .text1 {
+    position: absolute;
+    left: -100px;
+  }
+  .svg {
+    position: absolute;
+    left: -0px;
+    top: 123px;
+    z-index: 300;
   }
 </style>
