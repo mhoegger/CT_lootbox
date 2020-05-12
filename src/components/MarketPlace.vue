@@ -101,9 +101,6 @@ export default {
 
         }
       });
-      var test_card = [];
-      test_card.push({ tx: 0, revealblock: "asdf", content: 1 });
-      test_card.push({ tx: 0, revealblock: "qwer", content: 2 });
       return open_cards;
     }
   },
