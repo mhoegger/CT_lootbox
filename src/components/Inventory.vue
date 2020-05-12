@@ -58,29 +58,28 @@
 
         <!-- pending -->
         <div v-if="pending_cards.length>0" class="message" id="wait">
-          Our archaeologists are currently removing the dust from the prehistoric egg. You will get your precious prehistoric
-          friend any minute!
+          You just cracked open an old wooden crate and found a huge egg!
         </div>
         <!-- Bought -->
         <div
           v-if="bought_cards.length>0"
           class="message"
           id="wait"
-        >We found a very special egg, it is currently on its way to you!</div>
+        >Our scientists suggest that the egg might still be alive, let's let them make some more tests!</div>
         <!-- Ready -->
         <div
           v-if="ready_cards.length>0"
           class="message"
           id="wait"
-        >Click on your new egg to start hatching it!</div>
+        >Screw testing, just click on the egg and we'll see what happens!</div>
         <!-- Revealing -->
         <div
           v-if="revealing_cards.length>0"
           class="message"
           id="wait"
-        >It's already shaking, just a few moments!</div>
+        >It's actually moving, dont' get scared, keep on watching it!</div>
         <!-- Unopened -->
-        <div v-if="unopened_cards.length>0" class="message" id="wait">Click to see what you hatched!</div>
+        <div v-if="unopened_cards.length>0" class="message" id="wait">Your egg finally hatched, click on there to see what mistery it will reveal!</div>
       </div>
 
       <div class="opening_animation" ref="openingAnimation">
@@ -470,8 +469,9 @@ export default {
 .inventory {
     display: flex;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("./../assets/wood_wall.jpeg");
+  background-repeat: repeat-y;
 }
 .page-wrapper {
 }
