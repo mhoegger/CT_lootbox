@@ -112,15 +112,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.message {
-  background-color: white;
-  width: 200px;
-  padding: 20px;
-  margin: 30px;
-  margin-left: 5px;
-  border: 4px solid grey;
-  border-radius: 8px;
-}
+  .message-box{
+    margin: 0 auto;
+    grid-column: 2;
+  }
+
+  .message {
+    background-color: white;
+    width: 200px;
+    padding: 20px;
+    margin: 30px;
+    margin-left: 5px;
+    border: 4px solid grey;
+    border-radius: 8px;
+  }
 
 .text {
   position: absolute;

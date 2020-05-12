@@ -13,12 +13,13 @@
       <img class="card" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.cardNumber)}.png`)' alt />
     </div>
 
-    <div class="hovver">
+    <div class="hovver tooltip">
       <img  v-bind:src='require(`@/assets/cards/buy_overlay.png`)' alt />
       <div class='price-tag'>
         <p>PRICE</p>
         <p>{{toEther(card.price)}}</p>
       </div>
+      <span class="tooltiptext">{{card.action}}</span>
     </div>
 
 
@@ -245,4 +246,32 @@ export default {
     top: 123px;
     z-index: 300;
   }
+
+  /* Tooltip container */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    left: 50px;
+    bottom: -10px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 500;
+  }
+
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
 </style>

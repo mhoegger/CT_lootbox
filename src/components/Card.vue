@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper" @click="card.click">
+  <div class="card-wrapper tooltip" @click="card.click">
     <div class="background">
       <img class="spinner" v-if="card.offering" v-bind:src='require("@/assets/spinner.gif")' alt />
       <p class="spinner_p" style="left: 52px;" v-if="card.offering">Offering</p>
@@ -35,7 +35,7 @@
         {{card.card_id}}
       </div>
     </div>
-
+    <span v-if="card.action" class="tooltiptext">{{card.action}}</span>
   </div>
 </template>
 
@@ -221,5 +221,32 @@ top: 239px;
     left: -22px;
   top: -48px
   }
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  left: 20px;
+  bottom: -20px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 500;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 
 </style>

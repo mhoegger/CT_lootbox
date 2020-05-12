@@ -6,6 +6,7 @@
       <div class="own-offers">
         <div class="card-grid">
           <Offer v-for="(card, index) in own_offers" :key="index" :card="card"></Offer>
+
         </div>
       </div>
 
@@ -62,6 +63,7 @@ export default {
       let own_offers = [];
       temp.forEach(offer => {
         let offer_as_obj = Object.assign({}, offer);
+        offer_as_obj.action = "widthdraw";
         offer_as_obj.click = () => {
           this.$store.dispatch("withdrawOfferingFromContract", offer);
         };
@@ -74,6 +76,7 @@ export default {
       let others_offers = [];
       temp.forEach(offer => {
         let offer_as_obj = Object.assign({}, offer);
+        offer_as_obj.action = "buy";
         offer_as_obj.click = () => {
           this.$store.dispatch("buyOfferingFromContract", offer);
         };
@@ -90,6 +93,7 @@ export default {
       this.$store.state.card_pile.forEach(card => {
         if (card.amount > 0) {
           let new_card = card;
+          new_card.action = "offer";
           new_card.click = () => {
             this.$eventBus.$emit("openSellCard", new_card.card_id);
           };
@@ -142,4 +146,6 @@ export default {
   padding: 20px;
   margin: 30px;
 }
+
+
 </style>
