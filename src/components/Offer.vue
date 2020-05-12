@@ -1,16 +1,26 @@
 <template>
   <div class="card-wrapper" @click="card.click">
+    <div class="dino-image">
+      <img v-bind:src="getImageURl(card.cardNumber)" alt />
+    </div>
+
     <div class="background">
       <img class="spinner" v-if="card.widthdrawing || card.buying" v-bind:src='require("@/assets/spinner.gif")' alt />
       <p class="spinner_p" v-if="card.widthdrawing">Withdrawing</p>
       <p class="spinner_p" style="left: 62px;" v-if="card.buying">Buying</p>
       <img class="overlay" v-if="card.widthdrawing || card.buying" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.cardNumber)}_overlay.png`)' alt />
+
       <img class="card" v-bind:src='require(`@/assets/cards/offer_design_${getCardRarity(card.cardNumber)}.png`)' alt />
     </div>
 
-    <div class="dino-image">
-      <img v-bind:src="getImageURl(card.cardNumber)" alt />
+    <div class="hovver">
+      <img  v-bind:src='require(`@/assets/cards/buy_overlay.png`)' alt />
+      <div class='price-tag'>
+        <p>PRICE</p>
+        <p>{{toEther(card.price)}}</p>
+      </div>
     </div>
+
 
     <svg class="svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          width="200px" height="200px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
@@ -26,19 +36,22 @@
   </svg>
 
 
+
     <div class='card-info-wrapper'>
       <p>text: {{getCardText(card.cardNumber)}}</p>
       <p>CardNumber: {{card.cardNumber}}</p>
       <p>seller: {{card.seller}}</p>
-      <p>price: {{card.price}}</p>
+      <p class="hovver">price: {{card.price}}</p>
       <p>OfferID: {{card.offeringId}}</p>
       <p v-if="card.widthdrawing">Widthdrawing: {{card.widthdrawing}}</p>
+
     </div>
   </div>
 </template>
 
 <script>
 import getCard from "./../util/constants/cards";
+import ether from "@/mixin/ether.js";
 
 export default {
   name: "Card",
@@ -48,6 +61,7 @@ export default {
   props: {
     card: Object
   },
+  mixins: [ether],
   components: {},
   methods: {
     getImageURl (id) {
@@ -95,6 +109,24 @@ export default {
     position: absolute;
     z-index: 100;
     left: -25px;
+  }
+
+  .hovver {
+    position: absolute;
+    z-index: 400;
+    left: -25px;
+    opacity: 0;
+  }
+
+  .hovver_p {
+    position: absolute;
+    z-index: 401;
+    left: -25px;
+    opacity: 0;
+  }
+
+  .hovver:hover {
+    opacity: 1;
   }
   .overlay {
     position: absolute;
@@ -177,10 +209,31 @@ export default {
     top: 239px;
     /*background-color: blue;*/
   }
+
   .card-info-wrapper p, .card-info-wrapper h4 {
     margin:1px;
-    font-size: 12px;
+    font-size: 9.5px;
   }
+
+  .price-tag {
+    top: 200px;
+    position: absolute;
+    padding:2px;
+    z-index: 120;
+    color: black;
+    width: 159px;
+    left: 43px;
+    height: 71px;
+    top: 239px;
+    /*background-color: blue;*/
+  }
+  .price-tag p, .price-tag h4 {
+    margin:1px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+  }
+
 
   .text1 {
     position: absolute;

@@ -69,10 +69,6 @@ export default {
   },
   created () {
     console.log(this.card);
-
-
-
-    circularText("this text is in a circle ", 100, 0);
   }
 };
 </script>
