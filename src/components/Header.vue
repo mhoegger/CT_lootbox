@@ -6,7 +6,7 @@
     <img class="user-button" v-bind:src='require("@/assets/user_button.png")' alt />
     <div class="ether-button">
       <img v-bind:src='require("@/assets/etherium.png")' alt />
-      <p>{{balance}}</p>
+      <p>{{displayNumber(balance)}}</p>
     </div>
   </div>
 </template>
@@ -32,6 +32,18 @@ export default {
   mixins: [ether],
   created () {
     console.log("....");
+  },
+  methods: {
+    displayNumber(number){
+      number = parseFloat(number)
+      let pre_point = number.toFixed();
+      let remaining = 4 - pre_point.length
+      if (remaining > 0) {
+        return number.toFixed(remaining);
+      } else {
+        return number.toFixed();
+      }
+    }
   }
 };
 </script>
