@@ -6,7 +6,8 @@ export default {
      * converts wei to Ether
      */
     toEther (amount_in_wei) {
-      return parseFloat(Web3Utils.fromWei(amount_in_wei.valueOf().toString(), "ether")).toFixed(3);
+      console.log("amount_in_wei", amount_in_wei, typeof amount_in_wei, amount_in_wei.toString());
+      return parseFloat(Web3Utils.fromWei(amount_in_wei.toString(), 'ether')).toFixed(3);
     }
   }
 };

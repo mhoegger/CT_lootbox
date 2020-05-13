@@ -24,6 +24,11 @@
           <img class="img-setup" src="./../../assets/MetaMaskSetup3.png" alt />
           <img class="img-setup" src="./../../assets/MetaMaskSetup4.png" alt />
         </div>
+        <p>
+          Please also make sure that you have selected the Ropsten Test Network.
+        </p>
+        <img src="./../../assets/Ropsten.jpg" alt />
+
       </div>
     </div>
   </div>

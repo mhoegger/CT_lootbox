@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import {store} from "../store/";
+import Web3Utils from "web3-utils";
 
 let pollWeb3 = function () {
   let web3 = window.web3;
@@ -13,9 +14,10 @@ let pollWeb3 = function () {
             if (err) {
               console.log(err);
             } else {
+              console.log("333333", newBalance)
               store.dispatch("pollWeb3", {
                 coinbase: new_coinbase,
-                balance: parseInt(newBalance, 10)
+                balance: newBalance.toString()
               });
             }
           });
@@ -23,10 +25,12 @@ let pollWeb3 = function () {
           web3.eth.getBalance(store.state.web3.coinbase, (err, polledBalance) => {
             if (err) {
               console.log(err);
-            } else if (parseInt(polledBalance, 10) !== store.state.web3.balance) {
+            } else if (polledBalance.toString() !== store.state.web3.balance) {
+              console.log("333333", polledBalance)
+
               store.dispatch("pollWeb3", {
                 coinbase: store.state.web3.coinbase,
-                balance: parseInt(polledBalance, 10)
+                balance: polledBalance.toString()
               });
             }
           });
