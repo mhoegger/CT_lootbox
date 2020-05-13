@@ -133,13 +133,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.page-wrapper {
+    background-image: url("./../assets/market.jpg");
+    background-position: center;
+    min-height: 100vh;
+}
+.container {
+  padding: 50px;
+}
+.container h3 {
+  color: white;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
 }
 .own-offers {
-  background-color: brown;s
   padding: 20px;
   margin: 30px;
 }
