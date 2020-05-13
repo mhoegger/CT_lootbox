@@ -1,8 +1,9 @@
 <template>
   <div class="page-wrapper">
     <div class="container">
-
-      <h3>Own Offers</h3>
+      <div class="wood-sign">
+        <h3>Own Offers</h3>
+      </div>
       <div class="own-offers">
         <div class="card-grid">
           <Offer v-for="(card, index) in own_offers" :key="index" :card="card"></Offer>
@@ -10,12 +11,16 @@
         </div>
       </div>
 
-      <h3>Other's Offers</h3>
+      <div class="wood-sign">
+        <h3>Other's Offers</h3>
+      </div>
       <div class="card-grid">
         <Offer v-for="(card, index) in others_offers" :key="index" :card="card"></Offer>
       </div>
 
-      <h3>Hatched dinosaurs</h3>
+      <div class="wood-sign">
+        <h3 style="font-size: 28px">Hatched dinosaurs</h3>
+      </div>
       <div class="card-grid">
         <Card v-for="(card, index) in open_cards" :key="index" :card="card"></Card>
       </div>
@@ -156,5 +161,17 @@ export default {
   margin: 30px;
 }
 
-
+.wood-sign{
+  background-image: url("./../assets/sign.png");
+  width: 457px;
+  height: 85px;
+}
+  .wood-sign h3 {
+    position: relative;
+    top: 20px;
+    left: 50px;
+    font-size: 35px;
+    color: #64370e;
+    text-shadow: 3px -3px #3a2416;
+  }
 </style>
