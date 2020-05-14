@@ -9,14 +9,13 @@
         <h3
           class="no-space"
         >
-          MetaMaskModal
+          Setting up Meta Mask
         </h3>
 
       </div>
       <div>
         <p>
           Please Add the current domain as a valid connection to your MetaMask Account.  <br>  <br>
-          Please make sure to select the Ropsten Test Network.
         </p>
         <div class="grid">
           <img class="img-setup" src="./../../assets/MetaMaskSetup1.png" alt />
