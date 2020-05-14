@@ -176,15 +176,17 @@ export default {
       this.$refs.nest.style.top = this.eggY + "%";
       this.$refs.nest.style.left = this.eggX + "%";
     },
-    startOpeningAnimation: function() {
+    startOpeningAnimation () {
+      console.log("start")
       this.$refs.openingAnimation.style.top = this.$refs.nest.style.top;
       this.$refs.openingAnimation.style.left = this.$refs.nest.style.left;
       this.$refs.openingAnimation.classList.add("centered");
     },
-    playSoundFile: function(rarity) {
+    playSoundFile (rarity) {
       //var filename = `@/assets/sounds/sound_${rarity}.mp3`;
       //var audio = new Audio(require(filename));
       //console.log('filename: '+ filename)
+      console.log(this.$refs)
       this.$refs[`sound_${rarity}`].play();
       //document.getElementById('audio').play();
       console.log("played");
@@ -271,21 +273,23 @@ export default {
   mounted() {
     this.generateEggPosition();
     this.setEggPosition();
-    this.$eventBus.$on("openOpenBox", id => {
-      this.opening_card_rarity = this.getCardRarity(id);
-      console.log("opening card with id: " + id, this.opening_card_rarity);
+    this.$eventBus.$on("openOpenBox", box => {
+      this.opening_card_rarity = this.getCardRarity(box.content);
+      console.log("opening card with id: " + box.content, this.opening_card_rarity);
 
       this.openBox = true;
       this.show_openbox_modal = true;
+
       this.playSoundFile(this.opening_card_rarity);
       this.$refs.openingAnimation.style.display = "block";
       this.opening_card = {
         tx: 5,
         revealblock: "temp",
-        card_id: id,
+        card_id: box.content,
         click: () => {
           this.show_openbox_modal = false;
           this.$refs.openingAnimation.style.display = "none";
+          this.$store.dispatch("removeBoxUnopened", box);
         }
       };
       this.startOpeningAnimation();
@@ -296,6 +300,9 @@ export default {
     this.$store.dispatch("getCardsOpen");
 
     console.log("mount");
+  },
+  destroyed() {
+    this.$eventBus.$off("openOpenBox");
   }
 };
 </script>

@@ -96,8 +96,7 @@ function moveBoxRevealingReady ({commit}, box, store) {
 function moveBoxRevealingUnopened ({commit}, box, store) {
   Vue.set(box, "click", () => {
     console.log(".....");
-    Vue.prototype.$eventBus.$emit("openOpenBox", box.content);
-    removeBoxUnopened({commit}, box);
+    Vue.prototype.$eventBus.$emit("openOpenBox", box);
     store.dispatch("getCardsOpen");
   });
 
