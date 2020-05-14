@@ -1,16 +1,16 @@
 <template>
-  <div class="footer">    
+  <div class="footer">
       Blockchain Lootboxes
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
+  name: "Footer",
   props: {
     msg: String
   }
-}
+};
 </script>
 
 <style scoped>

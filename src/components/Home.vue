@@ -1,10 +1,13 @@
 <template>
   <div class="home-wrapper">
     <div class="home-left">
-      <div class="home-button"><router-link to="/Buy">buy lootboxes</router-link></div>
+      <div class="home-button"><router-link to="/Buy">Explore</router-link></div>
+    </div>
+    <div class="home-center">
+      <div class="home-button"><router-link to="/Inventory">Collect</router-link></div>
     </div>
     <div class="home-right">
-      <div class="home-button"><router-link to="/Inventory">view collection</router-link></div>
+      <div class="home-button"><router-link to="/MarketPlace">Trade</router-link></div>
     </div>
   </div>
 </template>
@@ -12,7 +15,7 @@
 <script>
 export default {
   name: "Home",
-  data: function() {
+  data () {
     return {};
   },
   props: {},
@@ -28,10 +31,14 @@ export default {
   height: 100vh;
   display: flex;
 }
+.home-wrapper a {
+  color: white;
+}
 .home-left,
-.home-right {
+.home-right,
+.home-center {
   height: 100%;
-  width: 50%;
+  width: 33%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,15 +51,21 @@ export default {
 .home-right:hover {
 }
 .home-left {
-  background-image: url("../assets/black.jpg");
+  background-image: url("../assets/explore.jpeg");
   background-position: center;
   background-size: cover;
   color: white;
 }
 .home-right {
-  background-image: url("../assets/white.jpg");
+  background-image: url("../assets/trade.jpeg");
   background-position: center;
   background-size: cover;
-  color: black;
+  color: white;
+}
+.home-center {
+  background-image: url("../assets/collect.jpeg");
+  background-position: center;
+  background-size: cover;
+  color: white;
 }
 </style>
