@@ -50,7 +50,7 @@ export default {
   name: "MarketPlace",
   data () {
     return {
-      show_sellcard_modal: true,
+      show_sellcard_modal: false,
       card_to_sell: null
     };
   },

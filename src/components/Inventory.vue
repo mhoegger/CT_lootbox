@@ -212,17 +212,9 @@ export default {
       return cards;
     },
     unopened_cards() {
-      //var cards = this.$store.state.box_pile.unopened;
+      var cards = this.$store.state.box_pile.unopened;
       
-      var cards = [];
-      cards.push({
-        tx: 5,
-        revealblock: "qwer",
-        card_id: 39,
-        click: () => {
-          this.$eventBus.$emit("openOpenBox", 39);
-        }
-      });
+
       
       return cards;
     },
