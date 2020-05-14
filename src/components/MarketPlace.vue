@@ -18,13 +18,13 @@
         <Offer v-for="(card, index) in others_offers" :key="index" :card="card"></Offer>
       </div>
 
+
       <div class="wood-sign">
         <h3 style="font-size: 28px">Hatched dinosaurs</h3>
       </div>
       <div class="card-grid">
         <Card v-for="(card, index) in open_cards" :key="index" :card="card"></Card>
       </div>
-
       <!--
         in loading states -> cursor: default + some kind of animation -> show that no interaction is required
 
@@ -35,6 +35,7 @@
 
       -->
     </div>
+
     <SellCard :card_id="card_to_sell" v-if="show_sellcard_modal" />
 
   </div>
@@ -141,8 +142,9 @@ export default {
 
 .page-wrapper {
     background-image: url("./../assets/market.jpg");
-    background-position: center;
+    background-position: bottom;
     min-height: 100vh;
+
 }
 .container {
   padding: 50px;
@@ -174,4 +176,6 @@ export default {
     color: #64370e;
     text-shadow: 3px -3px #3a2416;
   }
+
+
 </style>
