@@ -289,7 +289,7 @@ export default {
         click: () => {
           this.show_openbox_modal = false;
           this.$refs.openingAnimation.style.display = "none";
-          this.$store.dispatch("removeBoxUnopened", box)
+          this.$store.dispatch("removeBoxUnopened", box);
         }
       };
       this.startOpeningAnimation();

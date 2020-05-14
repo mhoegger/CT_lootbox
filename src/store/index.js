@@ -131,6 +131,9 @@ export const store = new Vuex.Store({
       return box_pile_actions.moveBoxRevealingUnopened({commit}, box, store);
     },
 
+    removeBoxUnopened: box_pile_actions.removeBoxUnopened,
+
+
     getCardsOpen ({commit}) {
       card_pile_actions.getCardsOpen({commit}, store);
     },
