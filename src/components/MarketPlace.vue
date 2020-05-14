@@ -35,8 +35,7 @@
 
       -->
     </div>
-
-    <SellCard :card_id="card_to_sell" v-if="show_sellcard_modal" />
+    <SellCard :card_id="card_to_sell" v-bind:class="{open: show_sellcard_modal}" />
 
   </div>
 </template>
@@ -51,7 +50,7 @@ export default {
   name: "MarketPlace",
   data () {
     return {
-      show_sellcard_modal: false,
+      show_sellcard_modal: true,
       card_to_sell: null
     };
   },
@@ -125,6 +124,7 @@ export default {
       this.show_sellcard_modal = true;
     });
     this.$eventBus.$on("closeSellCard", () => {
+      console.log('asdfasf');
       this.show_sellcard_modal = false;
     });
   },
